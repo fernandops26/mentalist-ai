@@ -20,6 +20,7 @@ import { findLeafNodes, generateEdges, generateNodes } from '@/utils/node';
 import {
   MouseEvent as ReactMouseEvent,
   Ref,
+  RefObject,
   TouchEvent as ReactTouchEvent,
 } from 'react';
 import { SUBTOPIC } from '@/utils/constants/headerTypes';
@@ -33,8 +34,8 @@ export type RFState = {
   edges: Edge[];
   viewport: Viewport;
   connectionNodeId: string | null;
-  reactFlowWrapper: Ref<HTMLElement>;
-  setReactFlowWrapper: (ref: Ref<HTMLElement>) => void;
+  reactFlowWrapper: RefObject<HTMLElement> | null;
+  setReactFlowWrapper: (ref: RefObject<HTMLElement>) => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -83,7 +84,7 @@ const useMapStore = create<RFState>((set, get) => ({
       context,
     };
   },
-  setReactFlowWrapper: (ref: Ref<HTMLElement>) => {
+  setReactFlowWrapper: (ref: RefObject<HTMLElement>) => {
     set({
       reactFlowWrapper: ref,
     });
@@ -125,19 +126,23 @@ const useMapStore = create<RFState>((set, get) => ({
   onConnectEnd: (event: any) => {
     const targetIsPane = event.target.classList.contains('react-flow__pane');
     const connectingNodeId = get().connectionNodeId!;
+    const reactFlowWrapper = get().reactFlowWrapper;
 
-    if (targetIsPane && connectingNodeId) {
+    if (targetIsPane && connectingNodeId && reactFlowWrapper?.current) {
       // we need to remove the wrapper bounds, in order to get the correct position
-      // const { top, left } = reactFlowWrapper.current.getBoundingClientRect();
+      const { top, left } = reactFlowWrapper.current.getBoundingClientRect();
+
+      const { project } = get().instance!;
+
       const id = nextId();
       const newNode = {
         id,
         type: 'topicNode',
         // we are removing the half of the node width (75) to center the new node
-        position: {
-          x: event.clientX,
-          y: event.clientY,
-        },
+        position: project({
+          x: event.clientX - left - 100,
+          y: event.clientY - top,
+        }),
         data: {
           text: 'Subtopic title',
           type: SUBTOPIC,
