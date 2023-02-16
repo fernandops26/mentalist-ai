@@ -9,7 +9,7 @@ export default function Form() {
     <div>
       <div>
         <Input
-          placeholder='Your Api key'
+          placeholder='Your OPEN AI Api key'
           value={token ?? ''}
           onChange={(e) => updateToken(e.target.value)}
         />

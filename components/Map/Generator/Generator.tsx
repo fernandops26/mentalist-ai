@@ -32,7 +32,7 @@ export default function Generator({ onGenerate }: GeneratorProps) {
       <div className='space-y-2'>
         <h4 className='font-medium leading-none'>Generator</h4>
         <p className='text-sm text-slate-500 dark:text-slate-400'>
-          Configure of subtopic generator.
+          Configure subtopic generator
         </p>
       </div>
       <div className='grid gap-2'>
@@ -80,7 +80,7 @@ export default function Generator({ onGenerate }: GeneratorProps) {
             </Select>
           </div>
         </div>
-        <div className='mt-1 grid grid-cols-3 items-center gap-4'>
+        <div className='mt-2 grid grid-cols-3 items-center gap-4'>
           <div className='flex w-full'>
             <Button onClick={() => onGenerate({ ...selected })}>
               Generate

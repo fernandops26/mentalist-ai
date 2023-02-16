@@ -40,7 +40,8 @@ export const generateContentIdeas = async ({
         .replace(/^\d+\. /, '')
         .replace(/'/g, '')
         .replace(/"/g, '')
-    );
+    )
+    .filter((idea: string) => idea.trim().length !== 0);
 
   return ideas;
 };

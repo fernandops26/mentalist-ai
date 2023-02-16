@@ -67,6 +67,7 @@ const TopicNode = ({ id, data }: any) => {
     const newNodes = ideas.map((idea: string) => ({
       text: idea,
       type: SUBTOPIC,
+      parentId: id,
     }));
 
     addChildrenNodes(id, 'topicNode', newNodes);
@@ -82,7 +83,7 @@ const TopicNode = ({ id, data }: any) => {
       <>
         <Popover>
           <PopoverTrigger>
-            <div className='p-1 hover:bg-slate-50 rounded'>
+            <div className='mt-1 p-1 hover:bg-slate-50 rounded'>
               <IconComponent name='want' className='h-3 w-3 ' />
             </div>
           </PopoverTrigger>
