@@ -83,8 +83,8 @@ const TopicNode = ({ id, data }: any) => {
       <>
         <Popover>
           <PopoverTrigger>
-            <div className='mt-1 p-1 hover:bg-slate-50 rounded'>
-              <IconComponent name='want' className='h-3 w-3 ' />
+            <div className='mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white'>
+              <IconComponent name='want' className='h-3 w-3' />
             </div>
           </PopoverTrigger>
           <PopoverContent className='w-80'>

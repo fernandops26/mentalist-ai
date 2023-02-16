@@ -60,6 +60,7 @@ export const generateEdges = (parentId: string, childrens: Array<Node>) => {
       source: parentId,
       target: childrenNode.id,
       animated: true,
+      style: { stroke: '#1A192B' },
     };
   });
 };

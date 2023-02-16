@@ -156,6 +156,7 @@ const useMapStore = create<RFState>((set, get) => ({
           id: nextId(),
           source: connectingNodeId,
           target: id,
+          style: { stroke: '#1A192B' },
         }),
         connectionNodeId: null,
       });
