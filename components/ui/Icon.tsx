@@ -4,6 +4,7 @@ import {
   CircleDot,
   LucideIcon,
   X,
+  Wand,
 } from 'lucide-react';
 
 type IconComponentProps = { name: string; [x: string]: any };
@@ -14,6 +15,7 @@ const iconTypes: IconTypes = {
   triangle: FlagTriangleRight,
   circleDot: CircleDot,
   close: X,
+  want: Wand,
 };
 
 const IconComponent = ({ name, ...props }: IconComponentProps) => {

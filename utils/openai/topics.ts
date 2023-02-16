@@ -4,15 +4,19 @@ interface GenerateContentIdeasProps {
   topic: string;
   context: Array<string>;
   token: string;
+  accurateFor: string;
+  type: string;
 }
 export const generateContentIdeas = async ({
   topic,
   context,
   token,
+  accurateFor,
+  type,
 }: GenerateContentIdeasProps) => {
-  let prompt = `Generate 3 full title ideas for topic "${topic}" in the context of subtopics "${context.join(
+  let prompt = `Generate 3 full ${type} for topic "${topic}" in the context of subtopics "${context.join(
     ' > '
-  )}". Format them as list.`;
+  )}". Format them as list. Accurate for ${accurateFor}.`;
 
   console.log({ prompt });
 

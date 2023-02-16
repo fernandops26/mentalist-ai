@@ -20,7 +20,10 @@
     "@radix-ui/react-dropdown-menu": "2.0.2",
     "lucide-react": "0.109.0",
     "openai": "3.1.0",
-    "dagre": "0.8.5"
+    "dagre": "0.8.5",
+    "@radix-ui/react-popover": "1.0.3",
+    "@radix-ui/react-select": "1.2.0",
+    "@radix-ui/react-label": "2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "10.4.13",

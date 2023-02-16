@@ -10,13 +10,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { main = '', context = [], token = '' } = req.body;
+  const { main = '', context = [], token = '', accurateFor, type } = req.body;
 
   if (!main) {
     return res.status(200).json({ ideas: [] });
   }
 
-  const ideas = await generateContentIdeas({ topic: main, context, token });
+  const ideas = await generateContentIdeas({
+    topic: main,
+    context,
+    token,
+    accurateFor,
+    type,
+  });
 
   res.status(200).json({ ideas });
 }

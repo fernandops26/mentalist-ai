@@ -4,22 +4,18 @@ import { Handle, Position } from 'reactflow';
 import { useDebounce } from 'react-use';
 import ToggleInput from '@/components/ui/ToggleInput';
 import BlockContainer from '@/components/ui/BlockContainer';
-import { MoreHorizontal } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/components/ui/DropdownMenu';
 import NodeHeader from '@/components/ui/NodeHeader';
 import { generateIdeas } from '@/utils/api/suggestions';
 import { SUBTOPIC } from '@/utils/constants/headerTypes';
 import Loader from '@/components/ui/Loader';
 import { useToken } from '@/utils/providers/TokenProvider';
+import IconComponent from '@/components/ui/Icon';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/Popover';
+import Generator from '../Generator/Generator';
 
 const handleStyle = { left: 10 };
 
@@ -46,7 +42,13 @@ const TopicNode = ({ id, data }: any) => {
     updateInnerType(id, type);
   };
 
-  const generator = async () => {
+  const generator = async ({
+    accurateFor,
+    type,
+  }: {
+    accurateFor: string;
+    type: string;
+  }) => {
     if (!token) {
       return;
     }
@@ -54,7 +56,14 @@ const TopicNode = ({ id, data }: any) => {
     setIsLoading(true);
     const { main, context } = getNodeContext(id);
 
-    const ideas = await generateIdeas(main, context, token);
+    const ideas = await generateIdeas({
+      main,
+      context,
+      token,
+      accurateFor,
+      type,
+    });
+
     const newNodes = ideas.map((idea: string) => ({
       text: idea,
       type: SUBTOPIC,
@@ -70,33 +79,18 @@ const TopicNode = ({ id, data }: any) => {
     }
 
     return (
-      <></>
-      // <DropdownMenu>
-      //   <DropdownMenuTrigger>
-      //     <MoreHorizontal className='ml-auto h-3 w-3 font-light rounded-full' />
-      //   </DropdownMenuTrigger>
-      //   <DropdownMenuContent>
-      //     <DropdownMenuSub>
-      //       <DropdownMenuSubTrigger>
-      //         {/* <UserPlus className="mr-2 h-4 w-4" /> */}
-      //         <span>Generate ideas</span>
-      //       </DropdownMenuSubTrigger>
-      //       <DropdownMenuPortal>
-      //         <DropdownMenuSubContent>
-      //           <DropdownMenuItem onClick={generator}>
-      //             {/* <Mail className="mr-2 h-4 w-4" /> */}
-      //             <span>Containing this</span>
-      //           </DropdownMenuItem>
-      //           <DropdownMenuItem>
-      //             {/* <MessageSquare className="mr-2 h-4 w-4" /> */}
-      //             <span>Based this</span>
-      //           </DropdownMenuItem>
-      //           {/* <DropdownMenuSeparator /> */}
-      //         </DropdownMenuSubContent>
-      //       </DropdownMenuPortal>
-      //     </DropdownMenuSub>
-      //   </DropdownMenuContent>
-      // </DropdownMenu>
+      <>
+        <Popover>
+          <PopoverTrigger>
+            <div className='p-1 hover:bg-slate-50 rounded'>
+              <IconComponent name='want' className='h-3 w-3 ' />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className='w-80'>
+            <Generator onGenerate={generator} />
+          </PopoverContent>
+        </Popover>
+      </>
     );
   };
 
