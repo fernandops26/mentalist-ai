@@ -25,7 +25,8 @@
     "@radix-ui/react-select": "1.2.0",
     "@radix-ui/react-label": "2.0.0",
     "class-variance-authority": "0.4.0",
-    "@radix-ui/react-aspect-ratio": "1.0.1"
+    "@radix-ui/react-aspect-ratio": "1.0.1",
+    "@vercel/analytics": "0.1.10"
   },
   "devDependencies": {
     "autoprefixer": "10.4.13",

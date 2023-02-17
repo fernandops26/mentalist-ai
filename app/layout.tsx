@@ -1,3 +1,4 @@
+import { AnalyticsWrapper } from '@/components/Providers/Analytics';
 import '@/styles/globals.css';
 import { TokenProvider } from '@/utils/providers/TokenProvider';
 
@@ -15,6 +16,7 @@ export default function RootLayout({
       <head />
       <body>
         <TokenProvider>{children}</TokenProvider>
+        <AnalyticsWrapper />
       </body>
     </html>
   );

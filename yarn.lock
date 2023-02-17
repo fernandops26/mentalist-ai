@@ -884,6 +884,11 @@
     "@typescript-eslint/types" "5.51.0"
     eslint-visitor-keys "^3.3.0"
 
+"@vercel/analytics@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.10.tgz#772ab975f1226b6db9632568299ead173c21da7d"
+  integrity sha512-jjJ8GzcPnQp0cMxpfYoUycMRBtDiaIeyVjZPiEPe99Dj1PdjMzAFYEASiV/hpNsXHkpcNYCveDFh6jnmh0YSDQ==
+
 "@xobotyi/scrollbar-width@^1.9.5":
   version "1.9.5"
   resolved "https://registry.yarnpkg.com/@xobotyi/scrollbar-width/-/scrollbar-width-1.9.5.tgz#80224a6919272f405b87913ca13b92929bdf3c4d"
