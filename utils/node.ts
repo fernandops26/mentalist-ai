@@ -2,50 +2,28 @@ import { nextId } from './id';
 import { Edge, Node, Position } from 'reactflow';
 import dagre from 'dagre';
 
-const RADIUS: number = 100;
-
-export function generateNewNodes(
-  centerX: number,
-  centerY: number,
-  type?: string,
-  data?: Array<any>
+export function generateNodes(
+  type: string,
+  parentNode: Node,
+  data: Array<any>
 ) {
-  const numberItems = data?.length!;
-  const angleStep = (2 * Math.PI) / numberItems;
-  let currentAngle = 0;
+  const parentWidth = parentNode.width!;
+  const elementsCount = data.length;
+  const space = 100;
+  const totalArea = elementsCount * parentWidth + space * (elementsCount - 1);
+  const xStartPos = parentNode.position.x - totalArea / 2;
 
-  const newNotes: Array<Node> = [];
-  for (let i = 0; i < numberItems; i++) {
-    const x = centerX + RADIUS * Math.cos(currentAngle);
-    const y = centerY + RADIUS * Math.sin(currentAngle);
+  let y = 200;
+  let x = xStartPos - parentWidth;
 
-    const id = nextId();
-    const newNode: Node = {
-      id,
-      position: {
-        x,
-        y,
-      },
-      data: (data && data[i]) ?? {
-        label: `Node ${id}`,
-      },
-      type,
-    };
-
-    newNotes.push(newNode);
-    currentAngle += angleStep;
-  }
-
-  return newNotes;
-}
-
-export function generateNodes(type: string, data: Array<any>) {
   return data.map(function (item) {
+    x += space + parentWidth;
+
     return {
       id: nextId(),
       position: {
-        x: 0,
-        y: 0,
+        x,
+        y: parentNode.position.y + y,
       },
       data: item,
       type,

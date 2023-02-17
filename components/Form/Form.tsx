@@ -14,9 +14,6 @@ export default function Form() {
           onChange={(e) => updateToken(e.target.value)}
         />
       </div>
-      {/* <div className='mt-3'>
-        <Button>Save</Button>
-      </div> */}
     </div>
   );
 }

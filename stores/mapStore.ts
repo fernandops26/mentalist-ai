@@ -14,12 +14,10 @@ import {
   ReactFlowInstance,
   Viewport,
 } from 'reactflow';
-import { initialNodes, nodeTypes } from '@/data/defaultNodes';
-import { initialEdges } from '@/data/defaultEdges';
+import { nodeTypes } from '@/data/defaultNodes';
 import { findLeafNodes, generateEdges, generateNodes } from '@/utils/node';
 import {
   MouseEvent as ReactMouseEvent,
-  Ref,
   RefObject,
   TouchEvent as ReactTouchEvent,
 } from 'react';
@@ -97,7 +95,10 @@ const useMapStore = create<RFState>((set, get) => ({
     });
 
     if (get().instance) {
-      save(get().instance?.toObject()!);
+      const items = get().instance?.toObject()!;
+      items.nodes = newNodes;
+
+      save(items);
     }
   },
   onEdgesChange: (changes: Array<EdgeChange>) => {
@@ -107,7 +108,12 @@ const useMapStore = create<RFState>((set, get) => ({
     });
 
     if (get().instance) {
-      save(get().instance?.toObject()!);
+      const items = get().instance?.toObject()!;
+      console.log({ newEdges });
+
+      items.edges = newEdges;
+
+      save(items);
     }
   },
   onConnect: (connection: Edge | Connection) => {
@@ -193,7 +199,7 @@ const useMapStore = create<RFState>((set, get) => ({
       return;
     }
 
-    const newNodes = generateNodes(type, data);
+    const newNodes = generateNodes(type, node, data);
 
     const newEdges = generateEdges(node.id, newNodes);
 
@@ -203,7 +209,7 @@ const useMapStore = create<RFState>((set, get) => ({
     set({ nodes: [...allNodes] });
     set({ edges: [...allEdges] });
   },
-  removeElement: (nodeId) => {
+  removeElement: (nodeId: string) => {
     const node = get().nodes.find((node) => node.id == nodeId)!;
 
     const instance = get().instance;

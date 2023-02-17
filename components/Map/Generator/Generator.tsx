@@ -24,7 +24,7 @@ interface GeneratorProps {
 export default function Generator({ onGenerate }: GeneratorProps) {
   const [selected, setSelected] = useState({
     accurateFor: 'blogs',
-    type: 'title ideas',
+    type: 'content ideas',
   });
 
   return (
@@ -36,29 +36,6 @@ export default function Generator({ onGenerate }: GeneratorProps) {
         </p>
       </div>
       <div className='grid gap-2'>
-        <div className='grid grid-cols-3 items-center gap-4'>
-          <Label htmlFor='goal'>Accurate for</Label>
-          <div className='flex w-full col-span-2'>
-            <Select
-              defaultValue={selected.accurateFor}
-              onValueChange={(value) =>
-                setSelected({ ...selected, accurateFor: value })
-              }
-            >
-              <SelectTrigger className='w-full'>
-                <SelectValue placeholder='Select goal' />
-              </SelectTrigger>
-              <SelectContent id='goal'>
-                <SelectGroup>
-                  <SelectItem value='blogs'>Blogs</SelectItem>
-                  <SelectItem value='youtube videos'>Videos</SelectItem>
-                  <SelectItem value='tweets'>Tweets</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
         <div className='grid grid-cols-3 items-center gap-4'>
           <Label htmlFor='goal'>Type</Label>
           <div className='flex w-full col-span-2'>
@@ -73,13 +50,37 @@ export default function Generator({ onGenerate }: GeneratorProps) {
               </SelectTrigger>
               <SelectContent id='type'>
                 <SelectGroup>
+                  <SelectItem value='content ideas'>Content ideas</SelectItem>
                   <SelectItem value='title ideas'>Title ideas</SelectItem>
-                  <SelectItem value='examples'>Examples</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
         </div>
+
+        <div className='grid grid-cols-3 items-center gap-4'>
+          <Label htmlFor='goal'>For</Label>
+          <div className='flex w-full col-span-2'>
+            <Select
+              defaultValue={selected.accurateFor}
+              onValueChange={(value) =>
+                setSelected({ ...selected, accurateFor: value })
+              }
+            >
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='For' />
+              </SelectTrigger>
+              <SelectContent id='for'>
+                <SelectGroup>
+                  <SelectItem value='blogs'>Blogs</SelectItem>
+                  <SelectItem value='youtube videos'>Videos</SelectItem>
+                  <SelectItem value='tweets'>Tweets</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         <div className='mt-2 grid grid-cols-3 items-center gap-4'>
           <div className='flex w-full'>
             <Button onClick={() => onGenerate({ ...selected })}>
