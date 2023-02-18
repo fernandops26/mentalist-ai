@@ -14,7 +14,7 @@ export const generateContentIdeas = async ({
   accurateFor,
   type,
 }: GenerateContentIdeasProps) => {
-  let prompt = `Generate 3 full ${type} for ${accurateFor} of topic "${topic}" in the context of subtopics "${context.join(
+  let prompt = `Generate 3 items of ${type} for ${accurateFor} of topic "${topic}" in the context of subtopics "${context.join(
     ' > '
   )}". Format them as list.`;
 

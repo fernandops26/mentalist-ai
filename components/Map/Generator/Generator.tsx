@@ -32,7 +32,7 @@ export default function Generator({ onGenerate }: GeneratorProps) {
       <div className='space-y-2'>
         <h4 className='font-medium leading-none'>Generator</h4>
         <p className='text-sm text-slate-500 dark:text-slate-400'>
-          Configure subtopic generator
+          Enter parameters to give direction to the generator.
         </p>
       </div>
       <div className='grid gap-2'>
@@ -50,6 +50,7 @@ export default function Generator({ onGenerate }: GeneratorProps) {
               </SelectTrigger>
               <SelectContent id='type'>
                 <SelectGroup>
+                  <SelectItem value='subcategories'>Subcategories</SelectItem>
                   <SelectItem value='content ideas'>Content ideas</SelectItem>
                   <SelectItem value='title ideas'>Title ideas</SelectItem>
                 </SelectGroup>
