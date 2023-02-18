@@ -3,9 +3,5 @@
 @tailwind utilities;
 
 .react-flow .react-flow__handle {
-  width: 30px;
-  height: 14px;
-  border-radius: 3px;
-  /* background-color: #97a7ba; */
   bottom: -10px;
 }

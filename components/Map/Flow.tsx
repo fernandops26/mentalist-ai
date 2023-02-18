@@ -3,7 +3,7 @@
 import 'reactflow/dist/style.css';
 
 import { useEffect, useMemo, useRef } from 'react';
-import ReactFlow, { Background, Controls } from 'reactflow';
+import ReactFlow, { Background, Controls, MiniMap } from 'reactflow';
 import useMapStore, { RFState } from '@/stores/mapStore';
 import { shallow } from 'zustand/shallow';
 import { nodeTypes } from '@/data/defaultNodes';
@@ -71,6 +71,7 @@ function Flow({ children }: any) {
         >
           <Background />
           <Controls />
+          <MiniMap zoomable pannable />
         </ReactFlow>
       </div>
     </>

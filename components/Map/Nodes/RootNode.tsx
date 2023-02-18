@@ -6,16 +6,10 @@ import ToggleInput from '@/components/ui/ToggleInput';
 import BlockContainer from '@/components/ui/BlockContainer';
 import NodeHeader from '@/components/ui/NodeHeader';
 
-const handleStyle = { left: 10 };
-
 const RootNode = ({ id, data }: any) => {
   const [value, setValue] = useState(data.text);
 
   const updateText = useMapStore((s) => s.updateText);
-
-  //   const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-  //     setVal(evt.target.value);
-  //   }, []);
 
   const [, cancel] = useDebounce(
     () => {
@@ -30,9 +24,13 @@ const RootNode = ({ id, data }: any) => {
       <NodeHeader text='Topic' type={data.type} />
       <div className='py-1 px-2 flex items-center text-sm text-slate-800'>
         <ToggleInput value={value} setValue={setValue} />
-        {/* <input id='text' name='text' onChange={onChange} /> */}
       </div>
-      <Handle type='source' position={Position.Bottom} id='a' />
+      <Handle
+        type='source'
+        className='bg-white border-4 border-slate-800 rounded-full w-4 h-4'
+        position={Position.Bottom}
+        id='a'
+      />
     </BlockContainer>
   );
 };

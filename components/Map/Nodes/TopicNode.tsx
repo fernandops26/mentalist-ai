@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/Popover';
 import Generator from '../Generator/Generator';
+import ToggleTextarea from '@/components/ui/ToggleTextarea';
 
 const handleStyle = { left: 10 };
 
@@ -101,14 +102,18 @@ const TopicNode = ({ id, data }: any) => {
 
   return (
     <BlockContainer menu={Menu()} onRemove={onRemove}>
-      <Handle type='target' position={Position.Top} />
+      <Handle
+        type='target'
+        className='bg-transparent border-none w-4 h-4'
+        position={Position.Top}
+      />
       <NodeHeader text='Sub topic' type={data.type} onChangeType={updateType} />
       <div className='py-1 px-2 text-slate-700'>
-        <ToggleInput value={value} setValue={setValue} />
+        <ToggleTextarea value={value} setValue={setValue} />
       </div>
       <Handle
         type='source'
-        className='bg-slate-700! hover:bg-slate-900!'
+        className='bg-white border-4 border-slate-800 rounded-full w-4 h-4 '
         position={Position.Bottom}
         id='a'
       />
