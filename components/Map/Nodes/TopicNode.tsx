@@ -102,21 +102,12 @@ const TopicNode = ({ id, data }: any) => {
 
   return (
     <BlockContainer menu={Menu()} onRemove={onRemove}>
-      <Handle
-        type='target'
-        className='bg-transparent border-none w-4 h-4'
-        position={Position.Top}
-      />
+      <Handle type='target' position={Position.Top} />
       <NodeHeader text='Sub topic' type={data.type} onChangeType={updateType} />
       <div className='py-1 px-2 text-slate-700'>
         <ToggleTextarea value={value} setValue={setValue} />
       </div>
-      <Handle
-        type='source'
-        className='bg-white border-4 border-slate-800 rounded-full w-4 h-4 '
-        position={Position.Bottom}
-        id='a'
-      />
+      <Handle type='source' position={Position.Bottom} id='a' />
     </BlockContainer>
   );
 };

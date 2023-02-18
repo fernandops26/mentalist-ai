@@ -93,12 +93,7 @@ const RootNode = ({ id, data }: any) => {
       <div className='py-1 px-2 flex items-center text-sm text-slate-800'>
         <ToggleInput value={value} setValue={setValue} />
       </div>
-      <Handle
-        type='source'
-        className='bg-white border-4 border-slate-800 rounded-full w-4 h-4'
-        position={Position.Bottom}
-        id='a'
-      />
+      <Handle type='source' position={Position.Bottom} id='a' />
     </BlockContainer>
   );
 };
