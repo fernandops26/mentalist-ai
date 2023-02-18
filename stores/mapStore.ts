@@ -109,7 +109,6 @@ const useMapStore = create<RFState>((set, get) => ({
 
     if (get().instance) {
       const items = get().instance?.toObject()!;
-      console.log({ newEdges });
 
       items.edges = newEdges;
 
