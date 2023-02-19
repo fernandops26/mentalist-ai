@@ -23,16 +23,10 @@ export default function Main() {
         </div>
         <div className='lg:w-1/2 md:w-full w-full py-5 overflow-hidden'>
           <AspectRatio ratio={16 / 9} className='bg-slate-50 '>
-            {/* <Image
-              src='https://res.cloudinary.com/dtvp4xr41/image/upload/v1676611962/Mentalist/mentalist3_tzu8l7.png'
-              alt='Mentalist map'
-              fill
-              className='rounded-md object-cover'
-            /> */}
             <video
               autoPlay
               loop
-              src='https://res.cloudinary.com/dtvp4xr41/video/upload/v1676616924/Mentalist/mentalist_akmcev.mp4'
+              src='https://res.cloudinary.com/dtvp4xr41/video/upload/v1676777380/Mentalist/subcategories2_wzayf8.mp4'
             />
           </AspectRatio>
         </div>
