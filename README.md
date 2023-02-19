@@ -7,7 +7,9 @@ An open source map mental application built using Next.js 13, Open AI.
 
 ## Demo
 
-Coming soon
+![website](https://github.com/fernandops26/mentalist-ai/blob/main/public/app-img.jpg)
+
+![map](https://github.com/fernandops26/mentalist-ai/blob/main/public/app-map.jpg)
 
 ## About this project
 
