@@ -35,7 +35,7 @@ export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
         <DialogHeader>
           <DialogTitle>Manage Open AI Api key</DialogTitle>
           <DialogDescription>
-            Set your api key from here. Click save when you're done.
+            Set your api key from here. Click save when you are done.
           </DialogDescription>
         </DialogHeader>
         <div className='grid gap-4 py-2'>
