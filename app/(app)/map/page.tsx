@@ -1,28 +1,17 @@
-import Form from '@/components/Form/Form';
 import Map from '@/components/Map/Index';
-import IconComponent from '@/components/ui/Icon';
 import Link from 'next/link';
 
 export default async function MapPage() {
   return (
-    <div className='flex w-full h-screen min-h-[calc(100vh_-_100px)]'>
-      <div className='hidden md:block w-52 p-4 bg-white h-full'>
-        <Link href='/' className='flex items-center space-x-2'>
-          <IconComponent name='logo' className='w-3 h-3' />
-          <span className='inline-block font-bold'>Mentalist</span>
-        </Link>
-        <div className='mt-2 border-t border-slate-300 pt-4'>
-          <Form />
-        </div>
-      </div>
-      <div className='hidden md:block flex-1'>
+    <div className='flex'>
+      <div className='hidden md:block flex-1  min-h-[calc(100vh_-_50px)]'>
         <div className='w-full bg-white h-full'>
           <div className='border h-full'>
             <Map />
           </div>
         </div>
       </div>
-      <div className=' md:hidden flex justify-center items-center w-full bg-slate-50'>
+      <div className=' md:hidden flex justify-center items-center w-full bg-slate-50 h-screen'>
         <div className='w-80 text-center mx-auto'>
           <p className='font-bold text-xl text-slate-800'>Hi mentalister! 👋</p>
           <p className=' text-slate-700 mt-4'>

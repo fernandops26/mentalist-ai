@@ -11,6 +11,7 @@ import {
   Lightbulb,
   Candy,
   Code,
+  Menu,
 } from 'lucide-react';
 
 type IconComponentProps = { name: string; [x: string]: any };
@@ -28,6 +29,7 @@ const iconTypes: IconTypes = {
   idea: Lightbulb,
   candy: Candy,
   code: Code,
+  menu: Menu,
 };
 
 const IconComponent = ({ name, ...props }: IconComponentProps) => {
