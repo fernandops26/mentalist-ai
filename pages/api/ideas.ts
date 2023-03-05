@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { AVAILABLE_MODELS, isAvailableModel } from '@/utils/constants/openai';
 import { generateContentIdeas } from '@/utils/openai/topics';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -10,7 +11,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { main = '', context = [], token = '', accurateFor, type } = req.body;
+  const { main = '', context = [], token = '', model, accurateFor, type } = req.body;
 
   if (!main) {
     return res.status(200).json({ ideas: [] });
@@ -22,6 +23,7 @@ export default async function handler(
     token,
     accurateFor,
     type,
+    model: isAvailableModel(model) ? model : AVAILABLE_MODELS[0],
   });
 
   res.status(200).json({ ideas });

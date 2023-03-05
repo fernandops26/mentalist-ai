@@ -1,6 +1,7 @@
 import { AnalyticsWrapper } from '@/components/Providers/Analytics';
+import { Toaster } from '@/components/ui/Toaster';
 import '@/styles/globals.css';
-import { TokenProvider } from '@/utils/providers/TokenProvider';
+import { OpenAIConfigurationProvider } from '@/utils/providers/ConfigurationProvider';
 
 export default function RootLayout({
   children,
@@ -15,8 +16,10 @@ export default function RootLayout({
       */}
       <head />
       <body>
-        <TokenProvider>{children}</TokenProvider>
+        <OpenAIConfigurationProvider>{children}</OpenAIConfigurationProvider>
         <AnalyticsWrapper />
+
+        <Toaster />
       </body>
     </html>
   );
