@@ -5,20 +5,19 @@ import { useDebounce } from 'react-use';
 import ToggleInput from '@/components/ui/ToggleInput';
 import BlockContainer from '@/components/ui/BlockContainer';
 import NodeHeader from '@/components/ui/NodeHeader';
-import { useToken } from '@/utils/providers/TokenProvider';
+import { useOpenAIConfiguration } from '@/utils/providers/ConfigurationProvider';
 import { generateIdeas } from '@/utils/api/suggestions';
 import { SUBTOPIC } from '@/utils/constants/headerTypes';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/Popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
 import Loader from '@/components/ui/Loader';
 import IconComponent from '@/components/ui/Icon';
 import Generator from '../Generator/Generator';
+import { useToast } from '@/hooks/use-toast';
 
 const RootNode = ({ id, data }: any) => {
-  const { token } = useToken();
+  const { token, model } = useOpenAIConfiguration();
+  const { toast } = useToast();
+
   const [value, setValue] = useState(data.text);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,17 +30,17 @@ const RootNode = ({ id, data }: any) => {
       updateText(id, value);
     },
     1000,
-    [value]
+    [value],
   );
 
-  const generator = async ({
-    accurateFor,
-    type,
-  }: {
-    accurateFor: string;
-    type: string;
-  }) => {
+  const generator = async ({ accurateFor, type }: { accurateFor: string; type: string }) => {
     if (!token) {
+      toast({
+        variant: 'destructive',
+        title: 'You need to configure your OpenAI API key first',
+        description: 'Use the hamburger menu located at the top of the page and configure your OpenAI API key.',
+      });
+
       return;
     }
 
@@ -54,6 +53,7 @@ const RootNode = ({ id, data }: any) => {
       token,
       accurateFor,
       type,
+      model,
     });
 
     const newNodes = ideas.map((idea: string) => ({
@@ -75,11 +75,11 @@ const RootNode = ({ id, data }: any) => {
       <>
         <Popover>
           <PopoverTrigger>
-            <div className='mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white'>
-              <IconComponent name='want' className='h-3 w-3' />
+            <div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
+              <IconComponent name="want" className="h-3 w-3" />
             </div>
           </PopoverTrigger>
-          <PopoverContent className='w-80'>
+          <PopoverContent className="w-80">
             <Generator onGenerate={generator} />
           </PopoverContent>
         </Popover>
@@ -89,11 +89,11 @@ const RootNode = ({ id, data }: any) => {
 
   return (
     <BlockContainer menu={Menu()}>
-      <NodeHeader text='Topic' type={data.type} />
-      <div className='py-1 px-2 flex items-center text-sm text-slate-800'>
+      <NodeHeader text="Topic" type={data.type} />
+      <div className="py-1 px-2 flex items-center text-sm text-slate-800">
         <ToggleInput value={value} setValue={setValue} />
       </div>
-      <Handle type='source' position={Position.Bottom} id='a' />
+      <Handle type="source" position={Position.Bottom} id="a" />
     </BlockContainer>
   );
 };

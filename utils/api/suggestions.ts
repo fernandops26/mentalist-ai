@@ -1,4 +1,5 @@
-import { useToken } from '../providers/TokenProvider';
+import { AvailableModel } from '../constants/openai';
+import { useOpenAIConfiguration } from '../providers/ConfigurationProvider';
 
 const host = '';
 
@@ -6,6 +7,7 @@ interface generateIdeasProps {
   main: string;
   context: Array<string>;
   token: string;
+  model: AvailableModel;
   accurateFor: string;
   type: string;
 }
@@ -14,6 +16,7 @@ export const generateIdeas = async ({
   main,
   context,
   token,
+  model,
   accurateFor,
   type,
 }: generateIdeasProps) => {
@@ -22,7 +25,7 @@ export const generateIdeas = async ({
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ main, context, accurateFor, type, token }),
+    body: JSON.stringify({ main, context, accurateFor, type, token, model }),
   });
 
   const content = await res.json();
