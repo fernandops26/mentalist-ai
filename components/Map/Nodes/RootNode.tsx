@@ -1,5 +1,5 @@
 import useMapStore from '@/stores/mapStore';
-import { memo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useDebounce } from 'react-use';
 import ToggleInput from '@/components/ui/ToggleInput';
@@ -14,6 +14,27 @@ import IconComponent from '@/components/ui/Icon';
 import Generator from '../Generator/Generator';
 import { useToast } from '@/hooks/use-toast';
 
+const Menu = ({ isLoading, generator }: { isLoading: boolean; generator: (...res: any) => {} }) => {
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <>
+      <Popover>
+        <PopoverTrigger>
+          <div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
+            <IconComponent name="want" className="h-3 w-3" />
+          </div>
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <Generator onGenerate={generator} />
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+};
+
 const RootNode = ({ id, data }: any) => {
   const { token, model } = useOpenAIConfiguration();
   const { toast } = useToast();
@@ -21,7 +42,10 @@ const RootNode = ({ id, data }: any) => {
   const [value, setValue] = useState(data.text);
   const [isLoading, setIsLoading] = useState(false);
 
-  const updateText = useMapStore((s) => s.updateText);
+  const updateText = useCallback(
+    useMapStore((s) => s.updateText),
+    [],
+  );
   const getNodeContext = useMapStore((s) => s.getNodeContext);
   const addChildrenNodes = useMapStore((s) => s.addChildrenNodes);
 
@@ -32,6 +56,10 @@ const RootNode = ({ id, data }: any) => {
     1000,
     [value],
   );
+
+  useEffect(() => {
+    setValue(data.text);
+  }, [data.text]);
 
   const generator = async ({ accurateFor, type }: { accurateFor: string; type: string }) => {
     if (!token) {
@@ -66,29 +94,8 @@ const RootNode = ({ id, data }: any) => {
     setIsLoading(false);
   };
 
-  const Menu = () => {
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    return (
-      <>
-        <Popover>
-          <PopoverTrigger>
-            <div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
-              <IconComponent name="want" className="h-3 w-3" />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <Generator onGenerate={generator} />
-          </PopoverContent>
-        </Popover>
-      </>
-    );
-  };
-
   return (
-    <BlockContainer menu={Menu()}>
+    <BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />}>
       <NodeHeader text="Topic" type={data.type} />
       <div className="py-1 px-2 flex items-center text-sm text-slate-800">
         <ToggleInput value={value} setValue={setValue} />

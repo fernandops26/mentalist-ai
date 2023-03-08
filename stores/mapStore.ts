@@ -6,51 +6,39 @@ import {
   EdgeChange,
   Node,
   NodeChange,
-  Connection,
   OnNodesChange,
   OnEdgesChange,
-  OnConnect,
   OnConnectStartParams,
   ReactFlowInstance,
   Viewport,
 } from 'reactflow';
-import { nodeTypes } from '@/data/defaultNodes';
+
 import { findLeafNodes, generateEdges, generateNodes } from '@/utils/node';
-import {
-  MouseEvent as ReactMouseEvent,
-  RefObject,
-  TouchEvent as ReactTouchEvent,
-} from 'react';
+import { MouseEvent as ReactMouseEvent, RefObject, TouchEvent as ReactTouchEvent } from 'react';
 import { SUBTOPIC } from '@/utils/constants/headerTypes';
 import { nextId } from '@/utils/id';
-import { readData, save } from '@/utils/storage';
+import { loadMapData, save } from '@/utils/storage';
 
 export type RFState = {
   instance: ReactFlowInstance | null;
   onInit: (instance: ReactFlowInstance) => void;
   nodes: Node[];
   edges: Edge[];
+  loadFromStorage: () => void;
   viewport: Viewport;
   connectionNodeId: string | null;
-  reactFlowWrapper: RefObject<HTMLElement> | null;
-  setReactFlowWrapper: (ref: RefObject<HTMLElement>) => void;
+  reactFlowWrapper: RefObject<HTMLDivElement | undefined> | null;
+  setReactFlowWrapper: (ref: RefObject<HTMLDivElement | undefined>) => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
-  onConnect: OnConnect;
-  onConnectStart: (
-    event: ReactMouseEvent | ReactTouchEvent,
-    params: OnConnectStartParams
-  ) => void;
+  onConnectStart: (event: ReactMouseEvent | ReactTouchEvent, params: OnConnectStartParams) => void;
   onConnectEnd: (event: MouseEvent | TouchEvent) => void;
-  nodeTypes: typeof nodeTypes;
   updateText: (nodeId: string, text: string) => void;
   updateInnerType: (nodeId: string, text: string) => void;
   addChildrenNodes: (nodeId: string, type: string, data: Array<any>) => void;
   getNodeContext: (nodeId: string) => { main: string; context: Array<string> };
   removeElement: (nodeId: string) => void;
 };
-
-const data = readData();
 
 // const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 //   data.nodes,
@@ -63,13 +51,34 @@ const useMapStore = create<RFState>((set, get) => ({
     set({
       instance,
     });
+
+    get().loadFromStorage();
   },
-  viewport: data.viewport,
-  nodes: data.nodes,
-  edges: data.edges,
-  nodeTypes,
+  viewport: {
+    x: 0,
+    y: 0,
+    zoom: 1,
+  },
+  nodes: [],
+  edges: [],
   reactFlowWrapper: null,
   connectionNodeId: null,
+  loadFromStorage: () => {
+    const data = loadMapData();
+
+    const instance = get().instance;
+    if (!instance) {
+      console.log('no instance');
+
+      return;
+    }
+
+    set({
+      nodes: data.nodes,
+      edges: data.edges,
+      viewport: data.viewport,
+    });
+  },
   getNodeContext: (nodeId: string) => {
     const nodes = findLeafNodes(get().nodes, nodeId).reverse();
 
@@ -82,7 +91,7 @@ const useMapStore = create<RFState>((set, get) => ({
       context,
     };
   },
-  setReactFlowWrapper: (ref: RefObject<HTMLElement>) => {
+  setReactFlowWrapper: (ref: RefObject<HTMLDivElement | undefined>) => {
     set({
       reactFlowWrapper: ref,
     });
@@ -93,35 +102,14 @@ const useMapStore = create<RFState>((set, get) => ({
     set({
       nodes: newNodes,
     });
-
-    if (get().instance) {
-      const items = get().instance?.toObject()!;
-      items.nodes = newNodes;
-
-      save(items);
-    }
   },
   onEdgesChange: (changes: Array<EdgeChange>) => {
     const newEdges = applyEdgeChanges(changes, get().edges);
     set({
       edges: newEdges,
     });
-
-    if (get().instance) {
-      const items = get().instance?.toObject()!;
-
-      items.edges = newEdges;
-
-      save(items);
-    }
   },
-  onConnect: (connection: Edge | Connection) => {
-    // set({ edges: addEdge(connection, get().edges) });
-  },
-  onConnectStart: (
-    event: ReactMouseEvent | ReactTouchEvent,
-    params: OnConnectStartParams
-  ) => {
+  onConnectStart: (event: ReactMouseEvent | ReactTouchEvent, params: OnConnectStartParams) => {
     if ((event.target as any).classList.contains('source')) {
       set({
         connectionNodeId: params.nodeId,
@@ -168,27 +156,29 @@ const useMapStore = create<RFState>((set, get) => ({
     }
   },
   updateInnerType: (nodeId: string, type: string) => {
-    set({
-      nodes: get().nodes.map((node) => {
-        if (node.id === nodeId) {
-          // it's important to create a new object here, to inform React Flow about the changes
-          node.data = { ...node.data, type };
-        }
+    const newNodes = get().nodes.map((node) => {
+      if (node.id === nodeId) {
+        node.data = { ...node.data, type };
+      }
 
-        return node;
-      }),
+      return node;
+    });
+
+    set({
+      nodes: newNodes,
     });
   },
   updateText: (nodeId: string, text: string) => {
-    set({
-      nodes: get().nodes.map((node) => {
-        if (node.id === nodeId) {
-          // it's important to create a new object here, to inform React Flow about the changes
-          node.data = { ...node.data, text };
-        }
+    const newNodes = get().nodes.map((node) => {
+      if (node.id === nodeId) {
+        node.data = { ...node.data, text };
+      }
 
-        return node;
-      }),
+      return node;
+    });
+
+    set({
+      nodes: newNodes,
     });
   },
   addChildrenNodes: (nodeId: string, type: string, data: Array<any>) => {
@@ -213,6 +203,8 @@ const useMapStore = create<RFState>((set, get) => ({
 
     const instance = get().instance;
     if (!instance) {
+      console.log('no instance');
+
       return;
     }
 

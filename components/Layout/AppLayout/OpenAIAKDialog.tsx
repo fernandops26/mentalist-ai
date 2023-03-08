@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/Button";
+import { Button } from '@/components/ui/Button';
 import {
   Dialog,
   DialogContent,
@@ -8,25 +8,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/Dialog";
+} from '@/components/ui/Dialog';
 
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
-import {
-  AvailableModel,
-  AVAILABLE_MODELS,
-  isAvailableModel,
-} from "@/utils/constants/openai";
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import { AvailableModel, AVAILABLE_MODELS, isAvailableModel } from '@/utils/constants/openai';
 
-import { useOpenAIConfiguration } from "@/utils/providers/ConfigurationProvider";
-import React, { useState } from "react";
+import { useOpenAIConfiguration } from '@/utils/providers/ConfigurationProvider';
+import React, { useState } from 'react';
 
 interface OpenAIAKDialogProps {
   isOpen: boolean;
@@ -36,7 +26,7 @@ interface OpenAIAKDialogProps {
 export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
   const { token, updateToken, model, updateModel } = useOpenAIConfiguration();
 
-  const [apiKey, setApiKey] = useState(() => token ?? "");
+  const [apiKey, setApiKey] = useState(() => token ?? '');
   const [apiModel, setApiModel] = useState<AvailableModel>(() => model);
 
   const handleSave = () => {
@@ -50,9 +40,7 @@ export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Manage Open AI Api key</DialogTitle>
-          <DialogDescription>
-            Set your api key from here. Click save when you are done.
-          </DialogDescription>
+          <DialogDescription>Set your api key from here. Click save when you are done.</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-2">
@@ -63,6 +51,7 @@ export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
 
             <Input
               id="apiKey"
+              placeholder="sk-xxxxxxxxxxxxxxxxx"
               value={apiKey}
               className="mt-2"
               onChange={(e) => setApiKey(e.target.value)}
@@ -74,12 +63,7 @@ export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
               API Model
             </Label>
 
-            <Select
-              value={apiModel}
-              onValueChange={(value) =>
-                isAvailableModel(value) ? setApiModel(value) : null
-              }
-            >
+            <Select value={apiModel} onValueChange={(value) => (isAvailableModel(value) ? setApiModel(value) : null)}>
               <SelectTrigger id="apiModel" className="w-[180px] mt-2">
                 <SelectValue placeholder="API Model" />
               </SelectTrigger>

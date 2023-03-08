@@ -2,6 +2,7 @@
 import { ReactFlowJsonObject } from 'reactflow';
 import { initialNodes } from '@/data/defaultNodes';
 import { initialEdges } from '@/data/defaultEdges';
+import { ImportedDataState } from './types';
 
 const KEY = 'mentalist-data';
 const TYPE = 'mentalist';
@@ -13,7 +14,7 @@ export const save = (obj: ReactFlowJsonObject) => {
   localStorage.setItem(KEY, JSON.stringify(objToSave));
 };
 
-export const readData = (): ReactFlowJsonObject => {
+export const loadMapData = (): ReactFlowJsonObject => {
   const data = typeof window !== 'undefined' && localStorage.getItem(KEY);
 
   if (!data) {
@@ -38,10 +39,20 @@ export const readData = (): ReactFlowJsonObject => {
   return jsonObj.map as ReactFlowJsonObject;
 };
 
+export const readFullContentObj = () => {
+  const data = typeof window !== 'undefined' && localStorage.getItem(KEY);
+
+  return JSON.parse(data as any);
+};
+
 const formatObject = (obj: ReactFlowJsonObject) => {
   return {
     type: TYPE,
     version: VERSION,
     map: obj,
   };
+};
+
+export const restore = (dataState: ImportedDataState) => {
+  localStorage.setItem(KEY, JSON.stringify(dataState));
 };

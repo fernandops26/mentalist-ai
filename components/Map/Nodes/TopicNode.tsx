@@ -1,8 +1,7 @@
 import useMapStore from '@/stores/mapStore';
-import { memo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useDebounce } from 'react-use';
-import ToggleInput from '@/components/ui/ToggleInput';
 import BlockContainer from '@/components/ui/BlockContainer';
 import NodeHeader from '@/components/ui/NodeHeader';
 import { generateIdeas } from '@/utils/api/suggestions';
@@ -15,7 +14,26 @@ import Generator from '../Generator/Generator';
 import ToggleTextarea from '@/components/ui/ToggleTextarea';
 import { useToast } from '@/hooks/use-toast';
 
-const handleStyle = { left: 10 };
+const Menu = ({ isLoading, generator }: { isLoading: boolean; generator: (...res: any) => {} }) => {
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <>
+      <Popover>
+        <PopoverTrigger>
+          <div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
+            <IconComponent name="want" className="h-3 w-3" />
+          </div>
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <Generator onGenerate={generator} />
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+};
 
 const TopicNode = ({ id, data }: any) => {
   const { token, model } = useOpenAIConfiguration();
@@ -24,7 +42,10 @@ const TopicNode = ({ id, data }: any) => {
   const [value, setValue] = useState(data.text);
   const [isLoading, setIsLoading] = useState(false);
 
-  const updateText = useMapStore((s) => s.updateText);
+  const updateText = useCallback(
+    useMapStore((s) => s.updateText),
+    [],
+  );
   const updateInnerType = useMapStore((s) => s.updateInnerType);
   const getNodeContext = useMapStore((s) => s.getNodeContext);
   const addChildrenNodes = useMapStore((s) => s.addChildrenNodes);
@@ -37,6 +58,10 @@ const TopicNode = ({ id, data }: any) => {
     1000,
     [value],
   );
+
+  useEffect(() => {
+    setValue(data.text);
+  }, [data.text]);
 
   const updateType = (type: string) => {
     updateInnerType(id, type);
@@ -75,33 +100,12 @@ const TopicNode = ({ id, data }: any) => {
     setIsLoading(false);
   };
 
-  const Menu = () => {
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    return (
-      <>
-        <Popover>
-          <PopoverTrigger>
-            <div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
-              <IconComponent name="want" className="h-3 w-3" />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <Generator onGenerate={generator} />
-          </PopoverContent>
-        </Popover>
-      </>
-    );
-  };
-
   const onRemove = () => {
     removeElement(id);
   };
 
   return (
-    <BlockContainer menu={Menu()} onRemove={onRemove}>
+    <BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />} onRemove={onRemove}>
       <Handle type="target" position={Position.Top} />
       <NodeHeader text="Sub topic" type={data.type} onChangeType={updateType} />
       <div className="py-1 px-2 text-slate-700">
