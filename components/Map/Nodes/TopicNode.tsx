@@ -23,11 +23,11 @@ const Menu = ({ isLoading, generator }: { isLoading: boolean; generator: (...res
 		<>
 			<Popover>
 				<PopoverTrigger>
-					<div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
-						<IconComponent name="want" className="h-3 w-3" />
+					<div className='mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white'>
+						<IconComponent name='want' className='h-3 w-3' />
 					</div>
 				</PopoverTrigger>
-				<PopoverContent className="w-80">
+				<PopoverContent className='w-80'>
 					<Generator onGenerate={generator} />
 				</PopoverContent>
 			</Popover>
@@ -106,12 +106,12 @@ const TopicNode = ({ id, data }: any) => {
 
 	return (
 		<BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />} onRemove={onRemove}>
-			<Handle type="target" position={Position.Top} />
-			<NodeHeader text="Sub topic" type={data.type} onChangeType={updateType} />
-			<div className="py-1 px-2 text-slate-700">
+			<Handle type='target' position={Position.Top} />
+			<NodeHeader text='Sub topic' type={data.type} onChangeType={updateType} />
+			<div className='py-1 px-2 text-slate-700'>
 				<ToggleTextarea value={value} setValue={setValue} />
 			</div>
-			<Handle type="source" position={Position.Bottom} id="a" />
+			<Handle type='source' position={Position.Bottom} id='a' />
 		</BlockContainer>
 	);
 };

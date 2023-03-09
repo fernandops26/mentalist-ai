@@ -13,7 +13,7 @@ export default function ActionButtons() {
 	return (
 		<div>
 			<Button onClick={goToMap}>Go to map</Button>
-			<Button variant="subtle" className="ml-4" onClick={goToGithub}>
+			<Button variant='subtle' className='ml-4' onClick={goToGithub}>
 				See on Github
 			</Button>
 		</div>

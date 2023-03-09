@@ -16,7 +16,7 @@ function ToggleInput({ value, setValue, className }: ToggleInputProps) {
 	}, []);
 
 	return (
-		<span className="w-full block">
+		<span className='w-full block'>
 			{showInputEle ? (
 				<Textarea
 					className={cn('w-full text-sm focus:outline-none text-slate-800!', className)}
@@ -27,7 +27,7 @@ function ToggleInput({ value, setValue, className }: ToggleInputProps) {
 					autoFocus
 				/>
 			) : (
-				<span className="w-full block" onDoubleClick={() => setShowInputEle(true)}>
+				<span className='w-full block' onDoubleClick={() => setShowInputEle(true)}>
 					{value || 'Change this text'}
 				</span>
 			)}

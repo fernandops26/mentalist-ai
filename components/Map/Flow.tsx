@@ -48,7 +48,7 @@ function Flow({ children }: any) {
 
 	return (
 		<>
-			<div className="w-full h-full bg-slate-100" ref={reactFlowWrapper}>
+			<div className='w-full h-full bg-slate-100' ref={reactFlowWrapper}>
 				<ReactFlow
 					onInit={onInit}
 					nodeTypes={nodeTypes}

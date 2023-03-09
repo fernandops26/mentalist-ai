@@ -7,7 +7,7 @@ export default function TryItButton() {
 	};
 
 	return (
-		<Button variant="link" onClick={goToMap}>
+		<Button variant='link' onClick={goToMap}>
 			Try It!
 		</Button>
 	);

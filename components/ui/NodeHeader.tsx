@@ -35,15 +35,15 @@ export default function NodeHeader({ type, onChangeType }: NodeHeaderProps) {
 	const iconName: string = Icons[type];
 
 	return (
-		<div className="p-2 flex items-center">
-			<div className="p-1 bg-slate-700 text-white rounded">
+		<div className='p-2 flex items-center'>
+			<div className='p-1 bg-slate-700 text-white rounded'>
 				<DropdownMenuHeader type={type} onChangeType={onChangeType}>
 					<div>
-						<IconComponent name={iconName} className="w-3 h-3" />
+						<IconComponent name={iconName} className='w-3 h-3' />
 					</div>
 				</DropdownMenuHeader>
 			</div>
-			<p className="text-sm ml-1 text-slate-400">{typesOptions.find((to) => to.value === type)?.text}</p>
+			<p className='text-sm ml-1 text-slate-400'>{typesOptions.find((to) => to.value === type)?.text}</p>
 		</div>
 	);
 }
@@ -58,7 +58,7 @@ export function DropdownMenuHeader({ children, type, onChangeType = (value: stri
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-32">
+			<DropdownMenuContent className='w-32'>
 				<DropdownMenuRadioGroup value={type} onValueChange={onChangeType}>
 					{typesOptions.map((typeOption) => (
 						<DropdownMenuRadioItem key={typeOption.value} value={typeOption.value}>

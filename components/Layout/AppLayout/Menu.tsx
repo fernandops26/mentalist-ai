@@ -50,7 +50,7 @@ export function Menu() {
 		<Menubar>
 			<MenubarMenu>
 				<MenubarTrigger>
-					<IconComponent name="menu" className="w-4 h-4" />
+					<IconComponent name='menu' className='w-4 h-4' />
 				</MenubarTrigger>
 				<MenubarContent>
 					<MenubarItem onClick={() => setOpen(true)}> Manage OpenAI ApiKey</MenubarItem>
@@ -60,16 +60,16 @@ export function Menu() {
 					<MenubarItem onClick={onExport}>Export</MenubarItem>
 					<MenubarSeparator />
 					<MenubarItem>
-						<Link href="https://twitter.com/fernandops26" target="_blank" rel="noreferrer" className="w-full">
+						<Link href='https://twitter.com/fernandops26' target='_blank' rel='noreferrer' className='w-full'>
 							Follow Updates
 						</Link>{' '}
 					</MenubarItem>
 					<MenubarItem>
 						<Link
-							href="https://github.com/fernandops26/mentalist-ai"
-							target="_blank"
-							rel="noreferrer"
-							className="w-full"
+							href='https://github.com/fernandops26/mentalist-ai'
+							target='_blank'
+							rel='noreferrer'
+							className='w-full'
 						>
 							Github
 						</Link>{' '}

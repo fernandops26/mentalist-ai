@@ -37,35 +37,35 @@ export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
 
 	return (
 		<Dialog open={isOpen} onOpenChange={openChange}>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className='sm:max-w-[425px]'>
 				<DialogHeader>
 					<DialogTitle>Manage Open AI Api key</DialogTitle>
 					<DialogDescription>Set your api key from here. Click save when you are done.</DialogDescription>
 				</DialogHeader>
 
-				<div className="flex flex-col gap-4 py-2">
+				<div className='flex flex-col gap-4 py-2'>
 					<div>
-						<Label htmlFor="apiKey" className="text-slate-500">
+						<Label htmlFor='apiKey' className='text-slate-500'>
 							API Key
 						</Label>
 
 						<Input
-							id="apiKey"
-							placeholder="sk-xxxxxxxxxxxxxxxxx"
+							id='apiKey'
+							placeholder='sk-xxxxxxxxxxxxxxxxx'
 							value={apiKey}
-							className="mt-2"
+							className='mt-2'
 							onChange={(e) => setApiKey(e.target.value)}
 						/>
 					</div>
 
 					<div>
-						<Label htmlFor="apiModel" className="text-slate-500">
+						<Label htmlFor='apiModel' className='text-slate-500'>
 							API Model
 						</Label>
 
 						<Select value={apiModel} onValueChange={(value) => (isAvailableModel(value) ? setApiModel(value) : null)}>
-							<SelectTrigger id="apiModel" className="w-[180px] mt-2">
-								<SelectValue placeholder="API Model" />
+							<SelectTrigger id='apiModel' className='w-[180px] mt-2'>
+								<SelectValue placeholder='API Model' />
 							</SelectTrigger>
 
 							<SelectContent>
