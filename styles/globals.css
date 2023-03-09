@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 .react-flow .react-flow__handle {
-  bottom: -10px;
-  @apply rounded-full w-4 h-4;
+	bottom: -10px;
+	@apply rounded-full w-4 h-4;
 }
 
 .react-flow .react-flow__handle.source {
-  @apply bg-white border-4 border-slate-800 rounded-full w-4 h-4;
+	@apply bg-white border-4 border-slate-800 rounded-full w-4 h-4;
 }
 
 .react-flow .react-flow__handle.target {
-  @apply bg-transparent border-none w-4 h-4 border-transparent;
+	@apply bg-transparent border-none w-4 h-4 border-transparent;
 }
