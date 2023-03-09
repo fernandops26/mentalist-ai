@@ -5,34 +5,34 @@ import { fileOpen, fileSave } from './filesystem';
 import { ExportedDataState } from './types';
 
 export const serializeAsJSON = (map: ReactFlowJsonObject, version: string): string => {
-  const data: ExportedDataState = {
-    type: EXPORT_DATA_TYPES.mentalist,
-    version,
-    map,
-  };
+	const data: ExportedDataState = {
+		type: EXPORT_DATA_TYPES.mentalist,
+		version,
+		map,
+	};
 
-  return JSON.stringify(data, null, 2);
+	return JSON.stringify(data, null, 2);
 };
 
 export const saveAsJSON = async (name: string, version: string, map: ReactFlowJsonObject) => {
-  const serialized = serializeAsJSON(map, version);
-  const blob = new Blob([serialized], {
-    type: MIME_TYPES.mentalist,
-  });
+	const serialized = serializeAsJSON(map, version);
+	const blob = new Blob([serialized], {
+		type: MIME_TYPES.mentalist,
+	});
 
-  const fileHandle = await fileSave(blob, {
-    name,
-    extension: 'mentalist',
-    description: 'Mentalist AI file',
-  });
+	const fileHandle = await fileSave(blob, {
+		name,
+		extension: 'mentalist',
+		description: 'Mentalist AI file',
+	});
 
-  return { fileHandle };
+	return { fileHandle };
 };
 
 export const loadFromJSON = async () => {
-  const file = await fileOpen({
-    description: 'Mentalist AI files',
-  });
+	const file = await fileOpen({
+		description: 'Mentalist AI files',
+	});
 
-  return loadFromBlob(await normalizeFile(file));
+	return loadFromBlob(await normalizeFile(file));
 };

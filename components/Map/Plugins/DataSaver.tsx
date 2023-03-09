@@ -4,19 +4,19 @@ import { useEffect } from 'react';
 import { useNodesInitialized, useReactFlow } from 'reactflow';
 
 function DataSaver() {
-  const store = useMapStore();
-  const reactFlowInstance = useReactFlow();
-  const nodesInitialized = useNodesInitialized();
+	const store = useMapStore();
+	const reactFlowInstance = useReactFlow();
+	const nodesInitialized = useNodesInitialized();
 
-  useEffect(() => {
-    if (nodesInitialized) {
-      const map = reactFlowInstance.toObject();
+	useEffect(() => {
+		if (nodesInitialized) {
+			const map = reactFlowInstance.toObject();
 
-      save(map);
-    }
-  }, [store.nodes, store.edges, store.viewport]);
+			save(map);
+		}
+	}, [store.nodes, store.edges, store.viewport]);
 
-  return null;
+	return null;
 }
 
 export default DataSaver;

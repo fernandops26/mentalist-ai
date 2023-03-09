@@ -15,105 +15,105 @@ import ToggleTextarea from '@/components/ui/ToggleTextarea';
 import { useToast } from '@/hooks/use-toast';
 
 const Menu = ({ isLoading, generator }: { isLoading: boolean; generator: (...res: any) => {} }) => {
-  if (isLoading) {
-    return <Loader />;
-  }
+	if (isLoading) {
+		return <Loader />;
+	}
 
-  return (
-    <>
-      <Popover>
-        <PopoverTrigger>
-          <div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
-            <IconComponent name="want" className="h-3 w-3" />
-          </div>
-        </PopoverTrigger>
-        <PopoverContent className="w-80">
-          <Generator onGenerate={generator} />
-        </PopoverContent>
-      </Popover>
-    </>
-  );
+	return (
+		<>
+			<Popover>
+				<PopoverTrigger>
+					<div className="mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white">
+						<IconComponent name="want" className="h-3 w-3" />
+					</div>
+				</PopoverTrigger>
+				<PopoverContent className="w-80">
+					<Generator onGenerate={generator} />
+				</PopoverContent>
+			</Popover>
+		</>
+	);
 };
 
 const TopicNode = ({ id, data }: any) => {
-  const { token, model } = useOpenAIConfiguration();
-  const { toast } = useToast();
+	const { token, model } = useOpenAIConfiguration();
+	const { toast } = useToast();
 
-  const [value, setValue] = useState(data.text);
-  const [isLoading, setIsLoading] = useState(false);
+	const [value, setValue] = useState(data.text);
+	const [isLoading, setIsLoading] = useState(false);
 
-  const updateText = useCallback(
-    useMapStore((s) => s.updateText),
-    [],
-  );
-  const updateInnerType = useMapStore((s) => s.updateInnerType);
-  const getNodeContext = useMapStore((s) => s.getNodeContext);
-  const addChildrenNodes = useMapStore((s) => s.addChildrenNodes);
-  const removeElement = useMapStore((s) => s.removeElement);
+	const updateText = useCallback(
+		useMapStore((s) => s.updateText),
+		[],
+	);
+	const updateInnerType = useMapStore((s) => s.updateInnerType);
+	const getNodeContext = useMapStore((s) => s.getNodeContext);
+	const addChildrenNodes = useMapStore((s) => s.addChildrenNodes);
+	const removeElement = useMapStore((s) => s.removeElement);
 
-  const [, cancel] = useDebounce(
-    () => {
-      updateText(id, value);
-    },
-    1000,
-    [value],
-  );
+	const [, cancel] = useDebounce(
+		() => {
+			updateText(id, value);
+		},
+		1000,
+		[value],
+	);
 
-  useEffect(() => {
-    setValue(data.text);
-  }, [data.text]);
+	useEffect(() => {
+		setValue(data.text);
+	}, [data.text]);
 
-  const updateType = (type: string) => {
-    updateInnerType(id, type);
-  };
+	const updateType = (type: string) => {
+		updateInnerType(id, type);
+	};
 
-  const generator = async ({ accurateFor, type }: { accurateFor: string; type: string }) => {
-    if (!token) {
-      toast({
-        variant: 'destructive',
-        title: 'You need to configure your OpenAI API key first',
-        description: 'Use the hamburger menu located at the top of the page and configure your OpenAI API key.',
-      });
+	const generator = async ({ accurateFor, type }: { accurateFor: string; type: string }) => {
+		if (!token) {
+			toast({
+				variant: 'destructive',
+				title: 'You need to configure your OpenAI API key first',
+				description: 'Use the hamburger menu located at the top of the page and configure your OpenAI API key.',
+			});
 
-      return;
-    }
+			return;
+		}
 
-    setIsLoading(true);
-    const { main, context } = getNodeContext(id);
+		setIsLoading(true);
+		const { main, context } = getNodeContext(id);
 
-    const ideas = await generateIdeas({
-      main,
-      context,
-      token,
-      accurateFor,
-      type,
-      model,
-    });
+		const ideas = await generateIdeas({
+			main,
+			context,
+			token,
+			accurateFor,
+			type,
+			model,
+		});
 
-    const newNodes = ideas.map((idea: string) => ({
-      text: idea,
-      type: SUBTOPIC,
-      parentId: id,
-    }));
+		const newNodes = ideas.map((idea: string) => ({
+			text: idea,
+			type: SUBTOPIC,
+			parentId: id,
+		}));
 
-    addChildrenNodes(id, 'topicNode', newNodes);
-    setIsLoading(false);
-  };
+		addChildrenNodes(id, 'topicNode', newNodes);
+		setIsLoading(false);
+	};
 
-  const onRemove = () => {
-    removeElement(id);
-  };
+	const onRemove = () => {
+		removeElement(id);
+	};
 
-  return (
-    <BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />} onRemove={onRemove}>
-      <Handle type="target" position={Position.Top} />
-      <NodeHeader text="Sub topic" type={data.type} onChangeType={updateType} />
-      <div className="py-1 px-2 text-slate-700">
-        <ToggleTextarea value={value} setValue={setValue} />
-      </div>
-      <Handle type="source" position={Position.Bottom} id="a" />
-    </BlockContainer>
-  );
+	return (
+		<BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />} onRemove={onRemove}>
+			<Handle type="target" position={Position.Top} />
+			<NodeHeader text="Sub topic" type={data.type} onChangeType={updateType} />
+			<div className="py-1 px-2 text-slate-700">
+				<ToggleTextarea value={value} setValue={setValue} />
+			</div>
+			<Handle type="source" position={Position.Bottom} id="a" />
+		</BlockContainer>
+	);
 };
 
 export default memo(TopicNode);

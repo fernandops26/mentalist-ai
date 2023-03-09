@@ -4,18 +4,18 @@ import { Toaster } from '@/components/ui/Toaster';
 import { OpenAIConfigurationProvider } from '@/utils/providers/ConfigurationProvider';
 
 interface ProvidersProps {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
 export default function Providers({ children }: ProvidersProps) {
-  return (
-    <>
-      <OpenAIConfigurationProvider>
-        <FlowWrapper>{children}</FlowWrapper>
-      </OpenAIConfigurationProvider>
-      <AnalyticsWrapper />
+	return (
+		<>
+			<OpenAIConfigurationProvider>
+				<FlowWrapper>{children}</FlowWrapper>
+			</OpenAIConfigurationProvider>
+			<AnalyticsWrapper />
 
-      <Toaster />
-    </>
-  );
+			<Toaster />
+		</>
+	);
 }
