@@ -32,7 +32,11 @@ export function Menu() {
 	};
 
 	const onLoad = async () => {
-		await actionLoadFileFromDisk();
+		const loaded = await actionLoadFileFromDisk();
+
+		if (!loaded) {
+			return;
+		}
 
 		loadFromStorage();
 

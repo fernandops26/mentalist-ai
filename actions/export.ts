@@ -8,7 +8,15 @@ export const actionSaveFileToDisk = async () => {
 };
 
 export const actionLoadFileFromDisk = async () => {
-	const data = await loadFromJSON();
+	try {
+		const data = await loadFromJSON();
 
-	restore(data);
+		restore(data);
+
+		return true;
+	} catch (error) {
+		console.error(error);
+	}
+
+	return false;
 };
