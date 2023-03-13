@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useDebounce } from 'react-use';
 import BlockContainer from '@/components/ui/BlockContainer';
-import NodeHeader from '@/components/ui/NodeHeader';
+// import NodeHeader from '@/components/ui/NodeHeader';
 import { generateIdeas } from '@/utils/api/suggestions';
 import { SUBTOPIC } from '@/utils/constants/headerTypes';
 import Loader from '@/components/ui/Loader';
@@ -46,7 +46,7 @@ const TopicNode = ({ id, data }: any) => {
 		useMapStore((s) => s.updateText),
 		[],
 	);
-	const updateInnerType = useMapStore((s) => s.updateInnerType);
+	// const updateInnerType = useMapStore((s) => s.updateInnerType);
 	const getNodeContext = useMapStore((s) => s.getNodeContext);
 	const addChildrenNodes = useMapStore((s) => s.addChildrenNodes);
 	const removeElement = useMapStore((s) => s.removeElement);
@@ -63,9 +63,9 @@ const TopicNode = ({ id, data }: any) => {
 		setValue(data.text);
 	}, [data.text]);
 
-	const updateType = (type: string) => {
-		updateInnerType(id, type);
-	};
+	// const updateType = (type: string) => {
+	// 	updateInnerType(id, type);
+	// };
 
 	const generator = async ({ accurateFor, type }: { accurateFor: string; type: string }) => {
 		if (!token) {
@@ -105,14 +105,16 @@ const TopicNode = ({ id, data }: any) => {
 	};
 
 	return (
-		<BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />} onRemove={onRemove}>
-			<Handle type='target' position={Position.Top} />
-			<NodeHeader text='Sub topic' type={data.type} onChangeType={updateType} />
-			<div className='py-1 px-2 text-slate-700'>
-				<ToggleTextarea value={value} setValue={setValue} />
-			</div>
-			<Handle type='source' position={Position.Bottom} id='a' />
-		</BlockContainer>
+		<>
+			{/* <NodeHeader text='Sub topic' type={data.type} onChangeType={updateType} /> */}
+			<BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />} onRemove={onRemove}>
+				<Handle type='target' position={Position.Top} />
+				<div className='py-1 px-2'>
+					<ToggleTextarea value={value} setValue={setValue} />
+				</div>
+				<Handle type='source' position={Position.Bottom} id='a' />
+			</BlockContainer>
+		</>
 	);
 };
 

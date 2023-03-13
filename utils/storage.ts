@@ -2,16 +2,23 @@
 import { ReactFlowJsonObject } from 'reactflow';
 import { initialNodes } from '@/data/defaultNodes';
 import { initialEdges } from '@/data/defaultEdges';
-import { ImportedDataState } from './types';
+import { Config, DataState, ImportedDataState, MapState } from './types';
+import { palettes } from '@/data/defaultPalettes';
 
 const KEY = 'mentalist-data';
 const TYPE = 'mentalist';
 const VERSION = 1;
 
-export const save = (obj: ReactFlowJsonObject) => {
-	const objToSave = formatObject(obj);
+export const saveMap = (obj: ReactFlowJsonObject) => {
+	saveProjectKey('map', formatMap(obj) as MapState);
+};
 
-	localStorage.setItem(KEY, JSON.stringify(objToSave));
+export const saveProjectKey = (key: keyof DataState, value: any) => {
+	const data = readFullContentObj();
+
+	data[key] = value;
+
+	localStorage.setItem(KEY, JSON.stringify(data));
 };
 
 export const loadMapData = (): ReactFlowJsonObject => {
@@ -39,20 +46,77 @@ export const loadMapData = (): ReactFlowJsonObject => {
 	return jsonObj.map as ReactFlowJsonObject;
 };
 
-export const readFullContentObj = () => {
+export const readFullContentObj = (): DataState => {
 	const data = typeof window !== 'undefined' && localStorage.getItem(KEY);
 
-	return JSON.parse(data as any);
+	const jsonData = JSON.parse(data as any);
+
+	return formatObject(jsonData);
 };
 
-const formatObject = (obj: ReactFlowJsonObject) => {
+const formatObject = (data: any) => {
 	return {
-		type: TYPE,
-		version: VERSION,
-		map: obj,
+		type: data?.type || TYPE,
+		version: data?.version || VERSION,
+		map: data?.map || {
+			nodes: [],
+			edges: [],
+			viewport: {
+				x: 0,
+				y: 0,
+				zoom: 1,
+			},
+		},
+		config: data?.config
+			? data?.config
+			: {
+					palette: palettes[0].id,
+			  },
 	};
 };
 
-export const restore = (dataState: ImportedDataState) => {
+const formatMap = (obj: ReactFlowJsonObject) => {
+	return {
+		nodes: obj.nodes,
+		edges: obj.edges,
+		viewport: obj.viewport,
+	};
+};
+
+export const updateConfig = (key: string, value: any) => {
+	const data = readFullContentObj();
+
+	data.config = {
+		...data.config,
+		[key]: value,
+	};
+
+	saveProjectKey('config', data.config);
+};
+
+export const getConfigKey = (key: keyof Config): any => {
+	const data = readFullContentObj();
+
+	return data.config ? data.config[key] : null;
+};
+
+export const restoreProject = (dataState: ImportedDataState) => {
 	localStorage.setItem(KEY, JSON.stringify(dataState));
+};
+
+const obj = {
+	openAI: 'mentalist-openai-key',
+	model: 'mentalist-model',
+};
+
+export const saveLocalConfigKey = (key: keyof typeof obj, value: string): void => {
+	const keyToUse: string = obj[key];
+
+	localStorage.setItem(keyToUse, value);
+};
+
+export const getLocalConfigKey = (key: keyof typeof obj) => {
+	const keyToUse: string = obj[key];
+
+	return window?.localStorage.getItem(keyToUse);
 };

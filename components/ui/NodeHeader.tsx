@@ -35,8 +35,8 @@ export default function NodeHeader({ type, onChangeType }: NodeHeaderProps) {
 	const iconName: string = Icons[type];
 
 	return (
-		<div className='p-2 flex items-center'>
-			<div className='p-1 bg-slate-700 text-white rounded'>
+		<div className='p-2 flex items-center bg-white'>
+			<div className='p-1 bg-slate-700 text-slate-500 '>
 				<DropdownMenuHeader type={type} onChangeType={onChangeType}>
 					<div>
 						<IconComponent name={iconName} className='w-3 h-3' />

@@ -1,6 +1,7 @@
 import FlowWrapper from '@/components/Map/FlowWrapper';
 import { AnalyticsWrapper } from '@/components/Providers/Analytics';
 import { Toaster } from '@/components/ui/Toaster';
+import { TooltipProvider } from '@/components/ui/Tooltip';
 import { OpenAIConfigurationProvider } from '@/utils/providers/ConfigurationProvider';
 
 interface ProvidersProps {
@@ -11,7 +12,9 @@ export default function Providers({ children }: ProvidersProps) {
 	return (
 		<>
 			<OpenAIConfigurationProvider>
-				<FlowWrapper>{children}</FlowWrapper>
+				<TooltipProvider>
+					<FlowWrapper>{children}</FlowWrapper>
+				</TooltipProvider>
 			</OpenAIConfigurationProvider>
 			<AnalyticsWrapper />
 

@@ -37,6 +37,7 @@ export const loadDataFromBlob = async (blob: Blob | File) => {
 					type: data.type,
 					version: data.version,
 					map: data.map,
+					config: data.config,
 				},
 			};
 		}

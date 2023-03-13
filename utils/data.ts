@@ -2,20 +2,21 @@ import { ReactFlowJsonObject } from 'reactflow';
 import { loadFromBlob, normalizeFile } from './blob';
 import { EXPORT_DATA_TYPES, MIME_TYPES } from './constants/export';
 import { fileOpen, fileSave } from './filesystem';
-import { ExportedDataState } from './types';
+import { Config, ExportedDataState, ImportedDataState, MapState } from './types';
 
-export const serializeAsJSON = (map: ReactFlowJsonObject, version: string): string => {
+export const serializeAsJSON = (map: MapState, version: string, config: Config | undefined): string => {
 	const data: ExportedDataState = {
 		type: EXPORT_DATA_TYPES.mentalist,
 		version,
 		map,
+		config,
 	};
 
 	return JSON.stringify(data, null, 2);
 };
 
-export const saveAsJSON = async (name: string, version: string, map: ReactFlowJsonObject) => {
-	const serialized = serializeAsJSON(map, version);
+export const saveAsJSON = async (name: string, version: string, map: MapState, config: Config | undefined) => {
+	const serialized = serializeAsJSON(map, version, config);
 	const blob = new Blob([serialized], {
 		type: MIME_TYPES.mentalist,
 	});
@@ -29,7 +30,7 @@ export const saveAsJSON = async (name: string, version: string, map: ReactFlowJs
 	return { fileHandle };
 };
 
-export const loadFromJSON = async () => {
+export const loadFromJSON = async (): Promise<ImportedDataState> => {
 	const file = await fileOpen({
 		description: 'Mentalist AI files',
 	});
