@@ -118,5 +118,5 @@ export const saveLocalConfigKey = (key: keyof typeof obj, value: string): void =
 export const getLocalConfigKey = (key: keyof typeof obj) => {
 	const keyToUse: string = obj[key];
 
-	return localStorage.getItem(keyToUse);
+	return window?.localStorage.getItem(keyToUse);
 };
