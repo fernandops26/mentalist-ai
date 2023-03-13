@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { AvailableModel, isAvailableModel } from '../constants/openai';
+import { getLocalConfigKey, saveLocalConfigKey } from '../storage';
 
 export interface OpenAIConfigurationContextValue {
 	updateToken: (token: string) => void;
@@ -26,19 +27,30 @@ interface OpenAIConfigurationProviderProps {
 export const OpenAIConfigurationProvider = ({ children }: OpenAIConfigurationProviderProps) => {
 	// ?: We store this as a variable so we can use our type guard to infer the correct type
 	// ?: for usage with `useState`
-	const defaultModel = process.env.NEXT_PUBLIC_OPENAI_COMPLETION_MODEL ?? '';
 
-	const [token, setToken] = useState(() => process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? '');
-	const [model, setModel] = useState<AvailableModel>(() =>
-		isAvailableModel(defaultModel) ? defaultModel : 'text-davinci-003',
-	);
+	const [token, setToken] = useState(() => process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? getLocalConfigKey('openAI'));
+	const [model, setModel] = useState<AvailableModel>(() => {
+		const defaultModel = getLocalConfigKey('model') ?? process.env.NEXT_PUBLIC_OPENAI_COMPLETION_MODEL!;
+
+		return isAvailableModel(defaultModel) ? defaultModel : 'text-davinci-003';
+	});
+
+	const onUpdateToken = useCallback((token: string) => {
+		setToken(token);
+		saveLocalConfigKey('openAI', token);
+	}, []);
+
+	const onUpdateModel = useCallback((model: AvailableModel) => {
+		setModel(model);
+		saveLocalConfigKey('model', model);
+	}, []);
 
 	const value = {
-		updateToken: setToken,
+		updateToken: onUpdateToken,
 		token,
 
 		model,
-		updateModel: setModel,
+		updateModel: onUpdateModel,
 	};
 
 	return <OpenAIConfigurationContext.Provider value={value}>{children}</OpenAIConfigurationContext.Provider>;

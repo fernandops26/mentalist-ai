@@ -7,7 +7,9 @@ import ReactFlow, { Background, Controls, MiniMap } from 'reactflow';
 import useMapStore, { RFState } from '@/stores/mapStore';
 import { shallow } from 'zustand/shallow';
 import { nodeTypes } from '@/data/defaultNodes';
+import { edgeTypes } from '@/data/defaultEdges';
 import DataSaver from './Plugins/DataSaver';
+import ModePanel from './Panel/ModePanel';
 
 const panOnDrag = [1, 2];
 
@@ -28,7 +30,7 @@ const fitViewOptions = {
 	padding: 3,
 };
 
-function Flow({ children }: any) {
+function Flow() {
 	const reactFlowWrapper = useRef(null);
 	const {
 		nodes,
@@ -52,6 +54,7 @@ function Flow({ children }: any) {
 				<ReactFlow
 					onInit={onInit}
 					nodeTypes={nodeTypes}
+					edgeTypes={edgeTypes}
 					nodes={nodes}
 					edges={edges}
 					defaultViewport={viewport}
@@ -69,6 +72,7 @@ function Flow({ children }: any) {
 					<Controls />
 					<MiniMap zoomable pannable />
 					<DataSaver />
+					<ModePanel />
 				</ReactFlow>
 			</div>
 		</>

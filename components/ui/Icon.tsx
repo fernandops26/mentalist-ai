@@ -12,6 +12,9 @@ import {
 	Candy,
 	Code,
 	Menu,
+	MousePointer,
+	Edit,
+	Palette,
 } from 'lucide-react';
 
 type IconComponentProps = { name: string; [x: string]: any };
@@ -30,6 +33,9 @@ const iconTypes: IconTypes = {
 	candy: Candy,
 	code: Code,
 	menu: Menu,
+	mousePointer: MousePointer,
+	fileEdit: Edit,
+	palette: Palette,
 };
 
 const IconComponent = ({ name, ...props }: IconComponentProps) => {

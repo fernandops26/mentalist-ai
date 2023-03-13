@@ -1,5 +1,5 @@
 import useMapStore from '@/stores/mapStore';
-import { save } from '@/utils/storage';
+import { saveMap } from '@/utils/storage';
 import { useEffect } from 'react';
 import { useNodesInitialized, useReactFlow } from 'reactflow';
 
@@ -12,7 +12,7 @@ function DataSaver() {
 		if (nodesInitialized) {
 			const map = reactFlowInstance.toObject();
 
-			save(map);
+			saveMap(map);
 		}
 	}, [store.nodes, store.edges, store.viewport]);
 

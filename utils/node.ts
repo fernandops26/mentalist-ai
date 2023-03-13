@@ -1,6 +1,8 @@
 import { nextId } from './id';
 import { Edge, Node, Position } from 'reactflow';
 import dagre from 'dagre';
+import { PaletteElement, PaletteElementNodeStyles } from './types';
+import { CSSProperties } from 'react';
 
 export function generateNodes(type: string, parentNode: Node, data: Array<any>) {
 	const parentWidth = parentNode.width!;
@@ -90,4 +92,24 @@ export const findLeafNodes = (nodes: Array<Node>, nodeId: string) => {
 	}
 
 	return tree;
+};
+
+export const getNodeColor = (depth: number, palette: PaletteElement) => {
+	const colors = palette.colors;
+	const index = depth % colors.length;
+	const color = colors[index];
+
+	const style = palette.node.buildStyles(color);
+
+	return { style, color };
+};
+
+export const getEdgeColor = (depth: number, palette: PaletteElement) => {
+	const colors = palette.colors;
+	const index = depth % colors.length;
+	const color = colors[index];
+
+	const style = palette.edge.buildStyles(color);
+
+	return { style, color };
 };

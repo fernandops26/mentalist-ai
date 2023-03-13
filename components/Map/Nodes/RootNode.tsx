@@ -4,7 +4,7 @@ import { Handle, Position } from 'reactflow';
 import { useDebounce } from 'react-use';
 import ToggleInput from '@/components/ui/ToggleInput';
 import BlockContainer from '@/components/ui/BlockContainer';
-import NodeHeader from '@/components/ui/NodeHeader';
+// import NodeHeader from '@/components/ui/NodeHeader';
 import { useOpenAIConfiguration } from '@/utils/providers/ConfigurationProvider';
 import { generateIdeas } from '@/utils/api/suggestions';
 import { SUBTOPIC } from '@/utils/constants/headerTypes';
@@ -96,8 +96,8 @@ const RootNode = ({ id, data }: any) => {
 
 	return (
 		<BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />}>
-			<NodeHeader text='Topic' type={data.type} />
-			<div className='py-1 px-2 flex items-center text-sm text-slate-800'>
+			{/* <NodeHeader text='Topic' type={data.type} /> */}
+			<div className='py-1 px-2 flex items-center text-lg'>
 				<ToggleInput value={value} setValue={setValue} />
 			</div>
 			<Handle type='source' position={Position.Bottom} id='a' />
