@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { AvailableModel, isAvailableModel } from '../constants/openai';
 import { getLocalConfigKey, saveLocalConfigKey } from '../storage';
 
@@ -28,17 +28,13 @@ export const OpenAIConfigurationProvider = ({ children }: OpenAIConfigurationPro
 	// ?: We store this as a variable so we can use our type guard to infer the correct type
 	// ?: for usage with `useState`
 
-	const [token, setToken] = useState('');
-	const [model, setModel] = useState<AvailableModel>('text-davinci-003');
-
-	useEffect(() => {
-		const openAIKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? getLocalConfigKey('openAI') ?? '';
-		setToken(openAIKey);
-
+	const [token, setToken] = useState(() => process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? getLocalConfigKey('openAI') ?? '');
+	const [model, setModel] = useState<AvailableModel>(() => {
 		const defaultModel = getLocalConfigKey('model') ?? process.env.NEXT_PUBLIC_OPENAI_COMPLETION_MODEL!;
 		const model = isAvailableModel(defaultModel) ? defaultModel : 'text-davinci-003';
-		setModel(model);
-	}, []);
+
+		return model;
+	});
 
 	const onUpdateToken = useCallback((token: string) => {
 		setToken(token);

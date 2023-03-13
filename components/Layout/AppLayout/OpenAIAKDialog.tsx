@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AvailableModel, AVAILABLE_MODELS, isAvailableModel } from '@/utils/constants/openai';
 
 import { useOpenAIConfiguration } from '@/utils/providers/ConfigurationProvider';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface OpenAIAKDialogProps {
 	isOpen: boolean;
