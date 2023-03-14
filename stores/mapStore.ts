@@ -108,7 +108,8 @@ const useMapStore = create<RFState>((set, get) => ({
 		});
 	},
 	onNodesChange: (changes: Array<NodeChange>) => {
-		const newNodes = applyNodeChanges(changes, get().nodes);
+		const sureChanges = changes.filter((change) => !(change.type === 'remove' && change.id === 'root'));
+		const newNodes = applyNodeChanges(sureChanges, get().nodes);
 
 		set({
 			nodes: newNodes,
