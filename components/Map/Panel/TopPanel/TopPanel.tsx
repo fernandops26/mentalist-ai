@@ -5,24 +5,32 @@ import { Separator } from '@/components/ui/Separator';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/ToggleGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip';
 import cn from '@/utils/classnames';
-import { WRITER_MODE, SELECTION_MODE } from '@/utils/constants/modes';
-// import { useConfig } from '@/utils/providers/ConfigProvider';
+import { AI_MODE, AvailableModes, SELECTION_MODE } from '@/utils/constants/modes';
+import { useConfiguration } from '@/utils/providers/ConfigurationProvider';
 import { Panel } from 'reactflow';
-import Palette from './Palette';
+import Theme from './Theme';
 
 export default function ModePanel() {
-	// const { mode, setMode } = useConfig();
+	const { mode, updateMode } = useConfiguration();
+
+	const handleUpdate = (value: string) => {
+		if (!value) {
+			return;
+		}
+
+		updateMode(value as AvailableModes);
+	};
 
 	return (
 		<Panel position='top-center'>
 			<div className='p-1 rounded bg-white flex space-x-1 items-center'>
-				{/* <div>
+				<div>
 					<ToggleGroup
 						type='single'
 						orientation='horizontal'
-						value={SELECTION_MODE}
+						value={mode}
 						className='flex flex-wrap'
-						onValueChange={() => {}}
+						onValueChange={handleUpdate}
 					>
 						<ToggleGroupItem value={SELECTION_MODE}>
 							<Tooltip>
@@ -36,21 +44,21 @@ export default function ModePanel() {
 								</TooltipContent>
 							</Tooltip>
 						</ToggleGroupItem>
-						<ToggleGroupItem value={WRITER_MODE}>
+						<ToggleGroupItem value={AI_MODE}>
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<div>
-										<IconComponent name='fileEdit' className='w-4 h-4' />
+										<IconComponent name='want' className='w-4 h-4' />
 									</div>
 								</TooltipTrigger>
 								<TooltipContent side='bottom'>
-									<p> Writer Mode</p>
+									<p> AI Mode</p>
 								</TooltipContent>
 							</Tooltip>
 						</ToggleGroupItem>
 					</ToggleGroup>
 				</div>
-				<Separator orientation='vertical' className='h-4' /> */}
+				<Separator orientation='vertical' className='h-4' />
 
 				<div>
 					<Tooltip>
@@ -69,22 +77,17 @@ export default function ModePanel() {
 											<IconComponent name='palette' className='w-4 h-4' />
 										</div>
 									</PopoverTrigger>
-									<PopoverContent className=' w-48'>
+									<PopoverContent className='w-48'>
 										<div className='grid gap-4'>
-											<div className='space-y-2'>
-												<h4 className='font-medium leading-none'>Palette</h4>
-											</div>
-
-											<div className='grid gap-2'>
-												<Palette />
-											</div>
+											<h4 className='font-medium leading-none'>Theme</h4>
+											<Theme />
 										</div>
 									</PopoverContent>
 								</Popover>
 							</div>
 						</TooltipTrigger>
 						<TooltipContent side='bottom'>
-							<p>Palette</p>
+							<p>Customization</p>
 						</TooltipContent>
 					</Tooltip>
 				</div>

@@ -1,9 +1,14 @@
 import React from 'react';
+import cn from '@/utils/classnames';
 
-export default function Loader({ className = '' }) {
+interface LoaderProps {
+	className?: string;
+}
+
+export default function Loader({ className = 'h-2 w-2' }: LoaderProps) {
 	return (
 		<svg
-			className={`animate-spin h-2 w-2 ${className} text-black`}
+			className={cn('animate-spin  text-black', className)}
 			xmlns='http://www.w3.org/2000/svg'
 			fill='none'
 			viewBox='0 0 24 24'

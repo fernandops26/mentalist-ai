@@ -107,6 +107,7 @@ export const restoreProject = (dataState: ImportedDataState) => {
 const obj = {
 	openAI: 'mentalist-openai-key',
 	model: 'mentalist-model',
+	mode: 'mentalist-mode',
 };
 
 export const saveLocalConfigKey = (key: keyof typeof obj, value: string): void => {
@@ -117,10 +118,6 @@ export const saveLocalConfigKey = (key: keyof typeof obj, value: string): void =
 
 export const getLocalConfigKey = (key: keyof typeof obj) => {
 	const keyToUse: string = obj[key];
-
-	if (typeof window === 'undefined') {
-		return null;
-	}
 
 	return localStorage.getItem(keyToUse);
 };

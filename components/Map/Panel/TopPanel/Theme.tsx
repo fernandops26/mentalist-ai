@@ -5,7 +5,7 @@ import { getConfigKey, updateConfig } from '@/utils/storage';
 import { PaletteElement } from '@/utils/types';
 import { useState } from 'react';
 
-export default function Palette() {
+export default function Theme() {
 	const [activePalette, setActivePalette] = useState(getConfigKey('palette'));
 	const applyPalette = useMapStore((s) => s.applyPalette);
 

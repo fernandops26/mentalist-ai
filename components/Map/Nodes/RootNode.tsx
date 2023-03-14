@@ -1,53 +1,20 @@
 import useMapStore from '@/stores/mapStore';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useDebounce } from 'react-use';
 import ToggleInput from '@/components/ui/ToggleInput';
 import BlockContainer from '@/components/ui/BlockContainer';
 // import NodeHeader from '@/components/ui/NodeHeader';
-import { useOpenAIConfiguration } from '@/utils/providers/ConfigurationProvider';
-import { generateIdeas } from '@/utils/api/suggestions';
-import { SUBTOPIC } from '@/utils/constants/headerTypes';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
-import Loader from '@/components/ui/Loader';
-import IconComponent from '@/components/ui/Icon';
-import Generator from '../Generator/Generator';
-import { useToast } from '@/hooks/use-toast';
-
-const Menu = ({ isLoading, generator }: { isLoading: boolean; generator: (...res: any) => {} }) => {
-	if (isLoading) {
-		return <Loader />;
-	}
-
-	return (
-		<>
-			<Popover>
-				<PopoverTrigger>
-					<div className='mt-1 p-1 hover:bg-slate-50 rounded hover:border-slate-700 border-2 border-white'>
-						<IconComponent name='want' className='h-3 w-3' />
-					</div>
-				</PopoverTrigger>
-				<PopoverContent className='w-80'>
-					<Generator onGenerate={generator} />
-				</PopoverContent>
-			</Popover>
-		</>
-	);
-};
+import { useConfiguration } from '@/utils/providers/ConfigurationProvider';
+import AIContentModal from './AIContentModal';
+import { AI_MODE } from '@/utils/constants/modes';
 
 const RootNode = ({ id, data }: any) => {
-	const { token, model } = useOpenAIConfiguration();
-	const { toast } = useToast();
-
+	const { mode } = useConfiguration();
+	const [isOpenAIModal, setIsOpenAIModal] = useState(false);
 	const [value, setValue] = useState(data.text);
-	const [isLoading, setIsLoading] = useState(false);
 
-	const updateText = useCallback(
-		useMapStore((s) => s.updateText),
-		[],
-	);
-	const getNodeContext = useMapStore((s) => s.getNodeContext);
-	const addChildrenNodes = useMapStore((s) => s.addChildrenNodes);
+	const updateText = useMapStore((s) => s.updateText);
 
 	const [, cancel] = useDebounce(
 		() => {
@@ -61,47 +28,32 @@ const RootNode = ({ id, data }: any) => {
 		setValue(data.text);
 	}, [data.text]);
 
-	const generator = async ({ accurateFor, type }: { accurateFor: string; type: string }) => {
-		if (!token) {
-			toast({
-				variant: 'destructive',
-				title: 'You need to configure your OpenAI API key first',
-				description: 'Use the hamburger menu located at the top of the page and configure your OpenAI API key.',
-			});
+	const onClick = () => {
+		switch (mode) {
+			case AI_MODE:
+				setIsOpenAIModal(true);
+				break;
+		}
+	};
 
-			return;
+	const renderContent = () => {
+		if (mode === AI_MODE) {
+			return <p>{value}</p>;
 		}
 
-		setIsLoading(true);
-		const { main, context } = getNodeContext(id);
-
-		const ideas = await generateIdeas({
-			main,
-			context,
-			token,
-			accurateFor,
-			type,
-			model,
-		});
-
-		const newNodes = ideas.map((idea: string) => ({
-			text: idea,
-			type: SUBTOPIC,
-			parentId: id,
-		}));
-
-		addChildrenNodes(id, 'topicNode', newNodes);
-		setIsLoading(false);
+		return <ToggleInput value={value} setValue={setValue} />;
 	};
 
 	return (
-		<BlockContainer menu={<Menu isLoading={isLoading} generator={generator} />}>
-			{/* <NodeHeader text='Topic' type={data.type} /> */}
-			<div className='py-1 px-2 flex items-center text-lg'>
-				<ToggleInput value={value} setValue={setValue} />
-			</div>
-			<Handle type='source' position={Position.Bottom} id='a' />
-		</BlockContainer>
+		<div onClick={onClick}>
+			<AIContentModal id={id} isOpen={isOpenAIModal} onChangeOpen={setIsOpenAIModal}>
+				<BlockContainer>
+					{/* <NodeHeader text='Topic' type={data.type} /> */}
+					<div className='py-1 px-2 flex items-center text-lg'>{renderContent()}</div>
+					<Handle type='source' position={Position.Bottom} id='a' />
+				</BlockContainer>
+			</AIContentModal>
+		</div>
 	);
 };
 

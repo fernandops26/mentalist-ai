@@ -1,3 +1,4 @@
+'use client';
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
 import cn from '@/utils/classnames';
 import React from 'react';
