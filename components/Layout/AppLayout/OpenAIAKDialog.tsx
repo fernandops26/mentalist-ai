@@ -15,8 +15,8 @@ import { Label } from '@/components/ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { AvailableModel, AVAILABLE_MODELS, isAvailableModel } from '@/utils/constants/openai';
 
-import { useOpenAIConfiguration } from '@/utils/providers/ConfigurationProvider';
-import React, { useEffect, useState } from 'react';
+import { useConfiguration } from '@/utils/providers/ConfigurationProvider';
+import React, { useState } from 'react';
 
 interface OpenAIAKDialogProps {
 	isOpen: boolean;
@@ -24,7 +24,7 @@ interface OpenAIAKDialogProps {
 }
 
 export const OpenAIAKDialog = ({ isOpen, openChange }: OpenAIAKDialogProps) => {
-	const { token, updateToken, model, updateModel } = useOpenAIConfiguration();
+	const { token, updateToken, model, updateModel } = useConfiguration();
 
 	const [apiKey, setApiKey] = useState(() => token ?? '');
 	const [apiModel, setApiModel] = useState<AvailableModel>(() => model);

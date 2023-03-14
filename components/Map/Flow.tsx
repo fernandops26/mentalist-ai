@@ -2,14 +2,14 @@
 
 import 'reactflow/dist/style.css';
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactFlow, { Background, Controls, MiniMap } from 'reactflow';
 import useMapStore, { RFState } from '@/stores/mapStore';
 import { shallow } from 'zustand/shallow';
 import { nodeTypes } from '@/data/defaultNodes';
 import { edgeTypes } from '@/data/defaultEdges';
 import DataSaver from './Plugins/DataSaver';
-import ModePanel from './Panel/ModePanel';
+import TopPanel from './Panel/TopPanel/TopPanel';
 
 const panOnDrag = [1, 2];
 
@@ -46,7 +46,7 @@ function Flow() {
 
 	useEffect(() => {
 		setReactFlowWrapper(reactFlowWrapper);
-	}, []);
+	}, [setReactFlowWrapper]);
 
 	return (
 		<>
@@ -72,7 +72,7 @@ function Flow() {
 					<Controls />
 					<MiniMap zoomable pannable />
 					<DataSaver />
-					<ModePanel />
+					<TopPanel />
 				</ReactFlow>
 			</div>
 		</>

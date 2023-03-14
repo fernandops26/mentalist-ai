@@ -1,40 +1,52 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { SELECTION_MODE, AvailableModes, isAvailableMode } from '../constants/modes';
 import { AvailableModel, isAvailableModel } from '../constants/openai';
 import { getLocalConfigKey, saveLocalConfigKey } from '../storage';
 
-export interface OpenAIConfigurationContextValue {
+export interface ConfigurationContextValue {
 	updateToken: (token: string) => void;
-	token: string | null;
+	token: string;
+	mode: AvailableModes | undefined;
 
 	model: AvailableModel;
 	updateModel: (model: AvailableModel) => void;
+	updateMode: (mode: AvailableModes) => void;
 }
 
-const OpenAIConfigurationContext = createContext<OpenAIConfigurationContextValue>({
+const ConfigurationContext = createContext<ConfigurationContextValue>({
 	updateToken: () => {},
-	token: null,
+	token: '',
+	mode: undefined,
 
 	model: 'text-davinci-003',
 	updateModel: () => {},
+	updateMode: () => {},
 });
 
-interface OpenAIConfigurationProviderProps {
+interface ConfigurationProviderProps {
 	children: React.ReactNode;
 }
 
-export const OpenAIConfigurationProvider = ({ children }: OpenAIConfigurationProviderProps) => {
-	// ?: We store this as a variable so we can use our type guard to infer the correct type
-	// ?: for usage with `useState`
+export const ConfigurationProvider = ({ children }: ConfigurationProviderProps) => {
+	const [token, setToken] = useState<string>('');
+	const [model, setModel] = useState<AvailableModel>('text-davinci-003');
+	const [mode, setMode] = useState<AvailableModes | undefined>();
 
-	const [token, setToken] = useState(() => process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? getLocalConfigKey('openAI') ?? '');
-	const [model, setModel] = useState<AvailableModel>(() => {
+	useEffect(() => {
+		const defaultMode = getLocalConfigKey('mode') ?? SELECTION_MODE;
+		setMode(isAvailableMode(defaultMode) ? defaultMode : SELECTION_MODE);
+
 		const defaultModel = getLocalConfigKey('model') ?? process.env.NEXT_PUBLIC_OPENAI_COMPLETION_MODEL!;
+
 		const model = isAvailableModel(defaultModel) ? defaultModel : 'text-davinci-003';
 
-		return model;
-	});
+		setModel(model);
+
+		const defaultToken = getLocalConfigKey('openAI')! ?? process.env.NEXT_PUBLIC_OPENAI_API_KEY!;
+		setToken(defaultToken);
+	}, []);
 
 	const onUpdateToken = useCallback((token: string) => {
 		setToken(token);
@@ -46,17 +58,24 @@ export const OpenAIConfigurationProvider = ({ children }: OpenAIConfigurationPro
 		saveLocalConfigKey('model', model);
 	}, []);
 
+	const onUpdateMode = useCallback((mode: AvailableModes) => {
+		setMode(mode);
+		saveLocalConfigKey('mode', mode);
+	}, []);
+
 	const value = {
 		updateToken: onUpdateToken,
 		token,
+		mode,
 
 		model,
 		updateModel: onUpdateModel,
+		updateMode: onUpdateMode,
 	};
 
-	return <OpenAIConfigurationContext.Provider value={value}>{children}</OpenAIConfigurationContext.Provider>;
+	return <ConfigurationContext.Provider value={value}>{children}</ConfigurationContext.Provider>;
 };
 
-export const useOpenAIConfiguration = () => {
-	return useContext(OpenAIConfigurationContext);
+export const useConfiguration = () => {
+	return useContext(ConfigurationContext);
 };

@@ -76,7 +76,7 @@ export function Menu() {
 					</MenubarItem>
 				</MenubarContent>
 			</MenubarMenu>
-			<OpenAIAKDialog isOpen={open} openChange={setOpen} />
+			{open && <OpenAIAKDialog isOpen={open} openChange={setOpen} />}
 		</Menubar>
 	);
 }

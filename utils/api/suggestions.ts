@@ -1,5 +1,4 @@
 import { AvailableModel } from '../constants/openai';
-import { useOpenAIConfiguration } from '../providers/ConfigurationProvider';
 
 const host = '';
 

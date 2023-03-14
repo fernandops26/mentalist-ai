@@ -2,13 +2,15 @@
 
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
+import Loader from '@/components/ui/Loader';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { useState } from 'react';
 
 interface GeneratorProps {
 	onGenerate: ({ accurateFor, type }: { accurateFor: string; type: string }) => void;
+	isLoading: boolean;
 }
-export default function Generator({ onGenerate }: GeneratorProps) {
+export default function Generator({ onGenerate, isLoading }: GeneratorProps) {
 	const [selected, setSelected] = useState({
 		accurateFor: 'blogs',
 		type: 'content ideas',
@@ -62,9 +64,15 @@ export default function Generator({ onGenerate }: GeneratorProps) {
 					</div>
 				</div>
 
-				<div className='mt-2 grid grid-cols-3 items-center gap-4'>
-					<div className='flex w-full'>
-						<Button onClick={() => onGenerate({ ...selected })}>Generate</Button>
+				<div className='mt-2'>
+					<div className='flex w-full items-center'>
+						<Button onClick={() => onGenerate({ ...selected })}>Generate </Button>
+						{isLoading && (
+							<div className='ml-2'>
+								{' '}
+								<Loader className='w-5 h-5 stroke-white text-white' />
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
